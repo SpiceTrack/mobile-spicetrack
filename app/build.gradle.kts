@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.example.spicetrack"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.spicetrack"
         minSdk = 30
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -46,6 +46,7 @@ resolutionStrategy.force ("org.jetbrains:annotations:23.0.0")
 dependencies {
 
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.annotation)
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.androidx.datastore.preferences)
