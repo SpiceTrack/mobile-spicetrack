@@ -24,4 +24,27 @@
     <string name="welcome_to_spicetrack">Welcome to SpiceTrack</string>
     <string name="back">back</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="splash_image">splash</string>
+    <string name="scan_your_spice">Scan Your Spice</string>
+
+
+    <string name="spicetrack">SpiceTrack</string>
+    <string name="title1">Slide 1</string>
+    <string name="desc1">Description for slide 1</string>
+    <string name="title2">Slide 2</string>
+    <string name="desc2">Description for slide 2</string>
+    <string name="title3">Slide 3</string>
+    <string name="desc3">Description for slide 3</string>
+    <string name="reg">Get Started</string>
+    <string name="log">Already have an account?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="image1">Image 1</string>
+    <string name="image2">Image 2</string>
+    <string name="image3">Image 3</string>
+    <string name="create_an_account">Let’s Create an Account</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="terms_conditions">Agree with Terms and Conditions</string>
+    <string name="Welcome">Welcome</string>
+
+
 </resources>

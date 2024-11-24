@@ -40,7 +40,7 @@ android {
     }
 }
 configurations.all {
-resolutionStrategy.force ("org.jetbrains:annotations:23.0.0")
+    resolutionStrategy.force ("org.jetbrains:annotations:23.0.0")
 }
 
 dependencies {
