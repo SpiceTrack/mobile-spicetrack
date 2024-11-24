@@ -45,6 +45,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="terms_conditions">Agree with Terms and Conditions</string>
     <string name="Welcome">Welcome</string>
+    <string name="image">p</string>
 
 
 </resources>

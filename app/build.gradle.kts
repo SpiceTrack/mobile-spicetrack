@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.spicetrack"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.spicetrack"
