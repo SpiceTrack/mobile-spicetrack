@@ -46,6 +46,9 @@
     <string name="terms_conditions">Agree with Terms and Conditions</string>
     <string name="Welcome">Welcome</string>
     <string name="image">p</string>
+    <string name="selamat_datang">Selamat Datang</string>
+    <string name="name_hint">masukan full name</string>
+    <string name="name">name</string>
 
 
 </resources>

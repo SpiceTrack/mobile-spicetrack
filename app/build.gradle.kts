@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.spicetrack"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.spicetrack"
@@ -70,4 +70,5 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.androidx.room.ktx)
+
 }
