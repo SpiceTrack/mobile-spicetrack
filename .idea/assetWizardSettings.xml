@@ -79,7 +79,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\USER\Downloads\Spice.png" />
+                                                <entry key="imagePath" value="C:\Users\USER\Downloads\ikon.png" />
                                                 <entry key="scalingPercent" value="83" />
                                               </map>
                                             </option>
@@ -112,7 +112,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_spice" />
+                                      <entry key="outputName" value="ikon" />
                                     </map>
                                   </option>
                                 </PersistentState>
