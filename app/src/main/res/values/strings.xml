@@ -60,6 +60,8 @@
     <string name="close">close</string>
     <string name="gallery">gallery</string>
     <string name="capture">capture</string>
+    <string name="up">upload</string>
+    <string name="preview">Preview</string>
 
 
 </resources>
