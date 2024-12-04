@@ -1,6 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Search Bar -->
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search for spices..."
+        android:background="@drawable/search_bar_background"
+        android:padding="12dp" />
+
+    <!-- Search Results -->
+    <RecyclerView
+        android:id="@+id/searchResults"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:marginTop="16dp" />
+</LinearLayout>

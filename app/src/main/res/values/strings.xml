@@ -47,5 +47,25 @@
     <string name="Welcome">Welcome</string>
     <string name="image">p</string>
 
+    <!--  CONTENT DESCRIPTION  -->
+    <string name="img_icon_description">IMG_ICON</string>
+    <string name="img_field_description">IMG_FIELD</string>
+    <string name="cam_description">CAM_BTN</string>
+    <string name="back_button_description">BACK_BTN</string>
+    <string name="gallery_description">GALLERY_BTN</string>
+    <string name="grid_description">GRID_BTN</string>
+    <string name="list_description">LIST_BTN</string>
+    <string name="rv_post_description">RV_POST</string>
+    <string name="btn_dashboard">BTN_DASHBOARD</string>
+
+    <!--  DASHBOARD  -->
+    <string name="dashboard_scan" translatable="false">SCAN</string>
+    <string name="dashboard_catalog" translatable="false">CATALOG</string>
+    <string name="dashboard_likes" translatable="false">LIKES</string>
+    <string name="scroll_up_button">Scroll Up</string>
+    <string name="drawer_hello">Hello !</string>
+    <string name="app_name2">Spice Track</string>
+    <string name="fyp">You might like this</string>
+
 
 </resources>

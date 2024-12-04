@@ -1,72 +1,41 @@
-package com.example.ulikbatik.ui.dashboard
+package com.example.spicetrack.home.ui.dashboard
 
-import android.content.Intent
+import android.R
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.ulikbatik.R
-import com.example.ulikbatik.data.model.PostModel
-import com.example.ulikbatik.databinding.ItemPostBinding
-import com.example.ulikbatik.ui.detailPost.DetailPostActivity
+import com.google.android.material.button.MaterialButton
 
-class DashboardAdapter :
-    PagingDataAdapter<PostModel, DashboardAdapter.PostViewHolder>(DIFF_CALLBACK) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        val binding = ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding)
-    }
+class DashboardAdapter(private val articles: List<Article>, private val onClick: (Article) -> Unit) :
+    RecyclerView.Adapter<DashboardAdapter.ArticleViewHolder>() {
 
-    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        val posts = getItem(position)
-        if (posts != null) {
-            holder.bind(posts)
-        }
-    }
-
-    class PostViewHolder(private val binding: ItemPostBinding) :
+    inner class ArticleViewHolder(private val binding: ItemArticleBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(post: PostModel) {
-            binding.apply {
-                Glide.with(root)
-                    .load(post.postImg)
-                    .placeholder(R.drawable.img_placeholder)
-                    .into(imagePost)
+        fun bind(article: Article) {
+            binding.articleTitle.text = article.title
+            binding.articleDescription.text = article.description
+            Glide.with(binding.root.context)
+                .load(article.imageUrl)
+                .into(binding.articleImage)
 
-                Glide.with(root)
-                    .load(post.user.pROFILEIMG)
-                    .placeholder(R.drawable.ic_profile)
-                    .into(imageIcon)
-
-                usernameTv.text = post.user.uSERNAME
-
-                itemPost.setOnClickListener {
-                    val intent = Intent(binding.root.context, DetailPostActivity::class.java)
-                    intent.putExtra(DetailPostActivity.EXTRA_ID_POST, post.postId)
-                    binding.root.context.startActivity(intent)
-                }
+            binding.root.setOnClickListener {
+                onClick(article)
             }
         }
     }
 
-    companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<PostModel>() {
-            override fun areItemsTheSame(
-                oldItem: PostModel,
-                newItem: PostModel
-            ): Boolean {
-                return oldItem == newItem
-            }
-
-            override fun areContentsTheSame(
-                oldItem: PostModel,
-                newItem: PostModel
-            ): Boolean {
-                return oldItem.postId == newItem.postId
-            }
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
+        val binding = ItemArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ArticleViewHolder(binding)
     }
+
+    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
+        holder.bind(articles[position])
+    }
+
+    override fun getItemCount() = articles.size
 }

@@ -1,33 +1,41 @@
-package com.example.ulikbatik.ui.dashboard
+package com.example.spicetrack.home.ui.dashboard
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.example.ulikbatik.data.local.UserPreferences
-import com.example.ulikbatik.data.model.PostModel
-import com.example.ulikbatik.data.model.UserModel
-import com.example.ulikbatik.data.remote.response.GeneralResponse
-import com.example.ulikbatik.data.repository.PostRepository
+import android.util.Log;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.viewModelScope;
+import kotlinx.coroutines.Dispatchers;
+import kotlinx.coroutines.launch;
+import java.util.List;
 
-class DashboardViewModel(
-    private val postRepository: PostRepository,
-    preferences: UserPreferences,
-    userModel: UserModel?
-) : ViewModel() {
+class DashboardViewModel : ViewModel() {
 
-    var pref = preferences
-    var user = userModel
+    private val _articles = MutableLiveData<List<Article>>()
+    val articles: LiveData<List<Article>> get() = _articles
 
-    val isLoading = postRepository.isLoading
-
-    fun getPosts(): LiveData<PagingData<PostModel>> {
-        return postRepository.getAllPost().cachedIn(viewModelScope)
+    fun fetchArticles(apiKey: String) {
+        viewModelScope.launch {
+            try {
+                val response = ApiService.create().getArticles(apiKey)
+                if (response.isSuccessful) {
+                    _articles.value = response.body() ?: emptyList()
+                }
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Error fetching articles", e)
+            }
+        }
     }
+    fun processImageWithMLKit(image: InputImage) {
+        val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
-    fun getFyp(): LiveData<GeneralResponse<List<PostModel>>>{
-        return postRepository.getFyp()
+        recognizer.process(image)
+            .addOnSuccessListener { visionText ->
+                // Teks yang terdeteksi
+                Log.d("MLKit", "Recognized Text: ${visionText.text}")
+            }
+            .addOnFailureListener { e ->
+                Log.e("MLKit", "Text recognition failed", e)
+            }
     }
-
 }
