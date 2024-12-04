@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import com.example.spicetrack.R
 import com.example.spicetrack.home.data.LoginRepository
-import com.example.spicetrack.home.data.Result
-
 
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {

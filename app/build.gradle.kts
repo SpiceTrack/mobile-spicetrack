@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.spicetrack"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.spicetrack"
@@ -47,8 +47,6 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.annotation)
-    implementation(libs.androidx.paging.runtime.ktx)
-    implementation(libs.androidx.leanback.paging)
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.androidx.datastore.preferences)
@@ -72,5 +70,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.tensorflow.lite)
+    implementation(libs.lifecycle.runtime.ktx)
+
 }

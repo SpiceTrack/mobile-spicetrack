@@ -46,6 +46,22 @@
     <string name="terms_conditions">Agree with Terms and Conditions</string>
     <string name="Welcome">Welcome</string>
     <string name="image">p</string>
+    <string name="selamat_datang">Selamat Datang</string>
+    <string name="name_hint">masukan full name</string>
+    <string name="search">search article</string>
+    <string name="name">name</string>
+    <string name="search_icon">search_icon</string>
+    <string name="profile_picture">profile_picture</string>
+    <string name="scan_icon">scan_icon</string>
+    <string name="spice_of_the_day">Spice_of_the_day</string>
+    <string name="spice_image">article_image</string>
+    <string name="spice_name">serahhh</string>
+    <string name="result">Hasil Analisis</string>
+    <string name="close">close</string>
+    <string name="gallery">gallery</string>
+    <string name="capture">capture</string>
+    <string name="up">upload</string>
+    <string name="preview">Preview</string>
 
     <!--  CONTENT DESCRIPTION  -->
     <string name="img_icon_description">IMG_ICON</string>

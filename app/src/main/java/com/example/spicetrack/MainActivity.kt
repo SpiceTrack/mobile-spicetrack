@@ -8,7 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.spicetrack.databinding.ActivityMainBinding
-import com.example.spicetrack.home.ui.register.RegisterActivity
+import com.example.spicetrack.home.ui.main.Home
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         // Tombol Get Started
         binding.btnGetStarted.setOnClickListener {
-            val registerIntent = Intent(this, RegisterActivity::class.java)
+            val registerIntent = Intent(this , Home::class.java)
             startActivity(registerIntent)
         }
 

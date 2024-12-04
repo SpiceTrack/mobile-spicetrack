@@ -4,6 +4,7 @@
         android:layout_height="match_parent"
         android:background="#764531">
 
+
         <TextView
             android:id="@+id/tv_app_name"
             android:layout_width="wrap_content"
