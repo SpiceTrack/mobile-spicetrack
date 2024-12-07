@@ -22,19 +22,19 @@ class Camera : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     private var imageCapture: ImageCapture? = null
+    private var currentImageUri: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.switchCamera.setOnClickListener {
-            cameraSelector =
-                if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
-                else CameraSelector.DEFAULT_BACK_CAMERA
+            cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
+            else CameraSelector.DEFAULT_BACK_CAMERA
             startCamera()
         }
+
         binding.captureImage.setOnClickListener { takePhoto() }
     }
 
@@ -65,13 +65,8 @@ class Camera : AppCompatActivity() {
                     preview,
                     imageCapture
                 )
-
             } catch (exc: Exception) {
-                Toast.makeText(
-                    this@Camera,
-                    "Gagal memunculkan kamera.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this@Camera, "Gagal memunculkan kamera.", Toast.LENGTH_SHORT).show()
                 Log.e(TAG, "startCamera: ${exc.message}")
             }
         }, ContextCompat.getMainExecutor(this))
@@ -81,7 +76,6 @@ class Camera : AppCompatActivity() {
         val imageCapture = imageCapture ?: return
 
         val photoFile = createCustomTempFile(application)
-
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
         imageCapture.takePicture(
@@ -89,18 +83,16 @@ class Camera : AppCompatActivity() {
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val intent = Intent()
-                    intent.putExtra(EXTRA_CAMERAX_IMAGE, output.savedUri.toString())
+                    currentImageUri = output.savedUri.toString() // Save the URI of the captured image
+                    val intent = Intent().apply {
+                        putExtra(EXTRA_CAMERAX_IMAGE, currentImageUri)
+                    }
                     setResult(CAMERAX_RESULT, intent)
                     finish()
                 }
 
                 override fun onError(exc: ImageCaptureException) {
-                    Toast.makeText(
-                        this@Camera,
-                        "Gagal mengambil gambar.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@Camera, "Gagal mengambil gambar.", Toast.LENGTH_SHORT).show()
                     Log.e(TAG, "onError: ${exc.message}")
                 }
             }
@@ -123,9 +115,7 @@ class Camera : AppCompatActivity() {
     private val orientationEventListener by lazy {
         object : OrientationEventListener(this) {
             override fun onOrientationChanged(orientation: Int) {
-                if (orientation == ORIENTATION_UNKNOWN) {
-                    return
-                }
+                if (orientation == ORIENTATION_UNKNOWN) return
 
                 val rotation = when (orientation) {
                     in 45 until 135 -> Surface.ROTATION_270
@@ -133,7 +123,6 @@ class Camera : AppCompatActivity() {
                     in 225 until 315 -> Surface.ROTATION_90
                     else -> Surface.ROTATION_0
                 }
-
                 imageCapture?.targetRotation = rotation
             }
         }

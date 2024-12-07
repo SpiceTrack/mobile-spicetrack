@@ -10,7 +10,9 @@ interface ApiService {
     suspend fun uploadImage(
         @Part file: MultipartBody.Part
     ): FileUploadResponse
+
 }
+
 
 
 

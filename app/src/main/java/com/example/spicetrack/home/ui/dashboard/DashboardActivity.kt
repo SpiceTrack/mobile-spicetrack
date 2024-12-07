@@ -1,4 +1,4 @@
-package com.example.spicesoftheday.ui
+package com.example.spicetrack.home.ui.dashboard
 
 import android.os.Bundle
 import androidx.activity.viewModels
