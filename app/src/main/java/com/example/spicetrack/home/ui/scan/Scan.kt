@@ -123,7 +123,7 @@ class Scan : AppCompatActivity() {
 
                     // Check if classification response is valid
                     if (successResponse.classification != null) {
-                        binding.resultTextView.text = if (successResponse.classification.isAboveThreshold == true) {
+                        binding.resultTextView.text = if (successResponse.classification == true) {
                             String.format(
                                 "%s with %.2f%% confidence",
                                 successResponse.classification.result,
@@ -135,7 +135,7 @@ class Scan : AppCompatActivity() {
                         }
 
                         // If classification meets threshold, navigate to article
-                        if (successResponse.classification.isAboveThreshold == true) {
+                        if (successResponse.classification == true) {
                             val spiceName = successResponse.classification.result // Identified spice name
                             val intent = Intent(this@Scan, DetailActivity::class.java)
                             intent.putExtra("SPICE_NAME", spiceName)
