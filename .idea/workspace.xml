@@ -10,16 +10,6 @@
           <theme>@style/Theme.Spicetrack</theme>
         </config>
       </layout>
-      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_camera.xml">
-        <config>
-          <theme>@style/Theme.Spicetrack</theme>
-        </config>
-      </layout>
-      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_dashboard.xml">
-        <config>
-          <theme>@style/Theme.Spicetrack</theme>
-        </config>
-      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_detail.xml">
         <config>
           <theme>@style/Theme.Spicetrack</theme>
@@ -41,6 +31,11 @@
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_register.xml">
+        <config>
+          <theme>@style/Theme.Spicetrack</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_result.xml">
         <config>
           <theme>@style/Theme.Spicetrack</theme>
         </config>
@@ -71,12 +66,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="200ed1e6-dd43-4973-9e36-453753d051c3" name="Changes" comment="ml">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/spicetrack/home/ui/network/ResponseLogin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="200ed1e6-dd43-4973-9e36-453753d051c3" name="Changes" comment="new">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/spicetrack/home/ui/network/Apiconfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/spicetrack/home/ui/network/Apiconfig.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/spicetrack/home/ui/scan/Scan.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/spicetrack/home/ui/scan/Scan.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +77,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\USER\.android\avd\Pixel_8_API_30.avd)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\LENOVO\.android\avd\Pixel_4_API_28_PIE.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -111,7 +102,6 @@
         <option value="layoutResourceFile" />
         <option value="resourceFile" />
         <option value="Kotlin Class" />
-        <option value="Class" />
       </list>
     </option>
   </component>
@@ -122,12 +112,12 @@
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {}
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/SpiceTrack/mobile-spicetrack.git&quot;,
-    &quot;accountId&quot;: &quot;6847410a-40c9-4c25-aac5-31e4a4fa21fb&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "git@github.com:SpiceTrack/mobile-spicetrack.git",
+    "accountId": "c75ac82c-1ca6-41a1-80f9-83e6829b65ec"
   }
-}</component>
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -162,8 +152,6 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\USER\AndroidStudioProjects\spicetrack\app\src\main\res\xml" />
-      <recent name="C:\Users\USER\AndroidStudioProjects\spicetrack\app\src\main\java\com\example\spicetrack\home\ui\scan" />
       <recent name="C:\Users\USER\AndroidStudioProjects\spicetrack\app\src\main\res\drawable" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -185,9 +173,6 @@
     <key name="android.template.1791778977">
       <recent name="com.example.spicetrack.home" />
     </key>
-    <key name="android.template.1091728373">
-      <recent name="com.example.spicetrack.home.ui.scan" />
-    </key>
   </component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
@@ -203,8 +188,6 @@
       <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
       <option name="ACTIVITY_EXTRA_FLAGS" value="" />
       <option name="MODE" value="default_activity" />
-      <option name="RESTORE_ENABLED" value="false" />
-      <option name="RESTORE_FILE" value="" />
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
       <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
@@ -404,55 +387,7 @@
       <option name="project" value="LOCAL" />
       <updated>1733059284191</updated>
     </task>
-    <task id="LOCAL-00018" summary="ikon">
-      <option name="closed" value="true" />
-      <created>1733233460155</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1733233460155</updated>
-    </task>
-    <task id="LOCAL-00019" summary="ikon">
-      <option name="closed" value="true" />
-      <created>1733233667213</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1733233667213</updated>
-    </task>
-    <task id="LOCAL-00020" summary="ml">
-      <option name="closed" value="true" />
-      <created>1733552449076</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1733552449076</updated>
-    </task>
-    <task id="LOCAL-00021" summary="ml">
-      <option name="closed" value="true" />
-      <created>1733553669716</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1733553669716</updated>
-    </task>
-    <task id="LOCAL-00022" summary="ml">
-      <option name="closed" value="true" />
-      <created>1733553812002</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1733553812002</updated>
-    </task>
-    <task id="LOCAL-00023" summary="ml">
-      <option name="closed" value="true" />
-      <created>1733554583717</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1733554583718</updated>
-    </task>
-    <option name="localTasksCounter" value="24" />
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -484,8 +419,6 @@
     <MESSAGE value="file register" />
     <MESSAGE value="file baru" />
     <MESSAGE value="new" />
-    <MESSAGE value="ikon" />
-    <MESSAGE value="ml" />
-    <option name="LAST_COMMIT_MESSAGE" value="ml" />
+    <option name="LAST_COMMIT_MESSAGE" value="new" />
   </component>
 </project>
