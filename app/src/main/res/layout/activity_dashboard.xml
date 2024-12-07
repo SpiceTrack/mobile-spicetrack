@@ -1,67 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     android:padding="16dp">
 
     <!-- Header Section -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="166dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:back
         android:gravity="center_vertical"
-        android:paddingVertical="8dp"
-        android:back>
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+
+        <ImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/profile_picture"
+            android:src="@drawable/ic_profile" />
+
 
         <TextView
-            android:id="@+id/welcome_message"
+            android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Spice Track"
+            android:text="@string/selamat_datang"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="108dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+
+        <TextView
+            android:id="@+id/welcome_message"
+            android:layout_width="127dp"
+            android:layout_height="wrap_content"
+            android:text="Spice Track"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
     <!-- Search and Scan Section -->
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginVertical="12dp"
         android:background="@drawable/rounded_search_background"
-        android:padding="8dp"
-        android:layout_marginVertical="12dp">
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/search_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_search"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
             android:contentDescription="Search Icon"
-            android:layout_marginEnd="8dp" />
+            android:src="@drawable/ic_search" />
 
         <EditText
             android:id="@+id/search_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Cari rempahmu"
-            android:textColorHint="@color/gray"
-            android:textColor="@color/black"
             android:background="@android:color/transparent"
+            android:hint="Cari Rempah"
+            android:imeOptions="actionSearch"
             android:padding="4dp"
-            android:imeOptions="actionSearch" />
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
 
         <ImageView
             android:id="@+id/scan_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_scan"
-            android:contentDescription="Scan Icon" />
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:contentDescription="Scan Icon"
+            android:src="@drawable/ic_scan" />
     </LinearLayout>
 
     <!-- Spice List Section -->
@@ -70,9 +102,22 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="8dp"
         android:clipToPadding="false"
+        android:padding="8dp"
         android:scrollbars="vertical"
-        tools:listitem="@layout/row_item"/>
+        tools:listitem="@layout/row_item" />
+
+    <!--    &lt;!&ndash; Scan Button &ndash;&gt;-->
+    <!--    <Button-->
+    <!--        android:id="@+id/scan_button"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Scan Rempah"-->
+    <!--        android:backgroundTint="@color/brown"-->
+    <!--        android:textColor="@color/white"-->
+    <!--        android:paddingHorizontal="16dp"-->
+    <!--        android:paddingVertical="12dp"-->
+    <!--        android:layout_marginTop="16dp"-->
+    <!--        android:layout_marginBottom="8dp" />-->
 
 </LinearLayout>

@@ -1,41 +1,45 @@
-package com.example.spicetrack.home.ui.dashboard
-
-import android.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
+import com.bumptech.glide.Glide
+import com.example.spicetrack.R
+import com.example.spicetrack.home.data.Spice
 
+class DashboardAdapter : RecyclerView.Adapter<DashboardAdapter.SpiceViewHolder>() {
 
-class DashboardAdapter(private val articles: List<Article>, private val onClick: (Article) -> Unit) :
-    RecyclerView.Adapter<DashboardAdapter.ArticleViewHolder>() {
+    private val spices = mutableListOf<Spice>()
 
-    inner class ArticleViewHolder(private val binding: ItemArticleBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(article: Article) {
-            binding.articleTitle.text = article.title
-            binding.articleDescription.text = article.description
-            Glide.with(binding.root.context)
-                .load(article.imageUrl)
-                .into(binding.articleImage)
+    fun submitList(newSpices: List<Spice>) {
+        spices.clear()
+        spices.addAll(newSpices)
+        notifyDataSetChanged()
+    }
 
-            binding.root.setOnClickListener {
-                onClick(article)
-            }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpiceViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_item, parent, false)
+        return SpiceViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: SpiceViewHolder, position: Int) {
+        holder.bind(spices[position])
+    }
+
+    override fun getItemCount(): Int = spices.size
+
+    class SpiceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val spiceImage: ImageView = itemView.findViewById(R.id.spice_image)
+        private val spiceName: TextView = itemView.findViewById(R.id.spice_name)
+        private val spiceDescription: TextView = itemView.findViewById(R.id.spice_description)
+
+        fun bind(spice: Spice) {
+            spiceName.text = spice.name
+            spiceDescription.text = spice.description
+            Glide.with(itemView.context)
+                .load(spice.imageUrl)
+                .into(spiceImage)
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
-        val binding = ItemArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ArticleViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        holder.bind(articles[position])
-    }
-
-    override fun getItemCount() = articles.size
 }
