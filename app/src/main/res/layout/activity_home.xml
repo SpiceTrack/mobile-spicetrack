@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.ui.main.Home">
+    tools:context=".home.ui.main.Home"
+    android:id="@+id/home">
 
     <!-- AppBar dengan Toolbar dan profil di pojok kiri atas -->
     <androidx.appcompat.widget.Toolbar
@@ -31,8 +32,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/login"
-                android:contentDescription="Profile picture"
-                android:clipToOutline="true"
+                android:contentDescription="@string/profile_picture"
                 android:scaleType="centerCrop"
                 android:background="@drawable/circle" />
 
@@ -42,11 +42,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Selamat datang, Alya"
+                android:text="@string/Welcome"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
                 android:importantForAccessibility="yes"
-                android:contentDescription="Welcome message" />
+                android:contentDescription="@string/welcome_to_spicetrack" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -75,6 +75,13 @@
             android:hint="@string/name_hint"
             android:inputType="text"
             android:padding="30dp" />
+
+        <ImageButton
+            android:id="@+id/btnScan"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/scan"
+            android:contentDescription="@string/capture" />
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -173,21 +173,11 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/tvAlreadyHaveAccount"
+            android:id="@+id/sampleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/log"
-            android:textSize="14sp"
-            android:textColor="#FF000000" />
-
-        <TextView
-            android:id="@+id/tvLogIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_in"
-            android:textColor="#764531"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:text="@string/Welcome"
+            android:textSize="18sp" />
     </LinearLayout>
 
 </LinearLayout>

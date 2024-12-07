@@ -37,11 +37,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(registerIntent)
         }
 
-        // Tombol Log In
-        binding.tvLogIn.setOnClickListener {
-            val loginIntent = Intent(this, LoginActivity::class.java)
-            startActivity(loginIntent)
-        }
 
         startAutoSlider()
     }

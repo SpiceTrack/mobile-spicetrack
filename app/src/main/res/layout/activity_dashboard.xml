@@ -98,7 +98,7 @@
 
     <!-- Spice List Section -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/spice_list"
+        android:id="@+id/row_item"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -106,18 +106,5 @@
         android:padding="8dp"
         android:scrollbars="vertical"
         tools:listitem="@layout/row_item" />
-
-    <!--    &lt;!&ndash; Scan Button &ndash;&gt;-->
-    <!--    <Button-->
-    <!--        android:id="@+id/scan_button"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Scan Rempah"-->
-    <!--        android:backgroundTint="@color/brown"-->
-    <!--        android:textColor="@color/white"-->
-    <!--        android:paddingHorizontal="16dp"-->
-    <!--        android:paddingVertical="12dp"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        android:layout_marginBottom="8dp" />-->
 
 </LinearLayout>
