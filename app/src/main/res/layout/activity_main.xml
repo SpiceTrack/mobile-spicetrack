@@ -172,6 +172,12 @@
         android:orientation="horizontal"
         android:gravity="center">
 
+        <TextView
+            android:id="@+id/sampleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Welcome"
+            android:textSize="18sp" />
     </LinearLayout>
 
 </LinearLayout>
