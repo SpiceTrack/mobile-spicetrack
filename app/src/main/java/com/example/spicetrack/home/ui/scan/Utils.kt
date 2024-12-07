@@ -11,7 +11,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
-import com.example.spicetrack.BuildConfig
+//import com.example.spicetrack.BuildConfig
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -24,40 +24,40 @@ private const val MAXIMAL_SIZE = 1000000 // 1 MB
 private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
 private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
 
-// Fungsi untuk mendapatkan URI gambar
-fun getImageUri(context: Context): Uri {
-    var uri: Uri? = null
-    // Jika versi Android >= Q, gunakan MediaStore untuk menyimpan gambar
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, "$timeStamp.jpg")
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/MyCamera/")
-        }
-        uri = context.contentResolver.insert(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            contentValues
-        )
-    }
-    // Jika tidak, gunakan FileProvider untuk perangkat yang lebih lama
-    return uri ?: getImageUriForPreQ(context)
-}
-
-// Fungsi untuk mendapatkan URI untuk perangkat dengan Android versi lama (sebelum Q)
-private fun getImageUriForPreQ(context: Context): Uri {
-    val filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-    val imageFile = File(filesDir, "MyCamera${File.separator}$timeStamp.jpg")
-
-    // Pastikan direktori sudah ada
-    imageFile.parentFile?.takeIf { !it.exists() }?.mkdirs()
-
-    // Mengembalikan URI menggunakan FileProvider
-    return FileProvider.getUriForFile(
-        context,
-        "${BuildConfig.APPLICATION_ID}.fileprovider",
-        imageFile
-    )
-}
+//// Fungsi untuk mendapatkan URI gambar
+//fun getImageUri(context: Context): Uri {
+//    var uri: Uri? = null
+//    // Jika versi Android >= Q, gunakan MediaStore untuk menyimpan gambar
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//        val contentValues = ContentValues().apply {
+//            put(MediaStore.MediaColumns.DISPLAY_NAME, "$timeStamp.jpg")
+//            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+//            put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/MyCamera/")
+//        }
+//        uri = context.contentResolver.insert(
+//            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//            contentValues
+//        )
+//    }
+//    // Jika tidak, gunakan FileProvider untuk perangkat yang lebih lama
+//    return uri ?: getImageUriForPreQ(context)
+//}
+//
+//// Fungsi untuk mendapatkan URI untuk perangkat dengan Android versi lama (sebelum Q)
+//private fun getImageUriForPreQ(context: Context): Uri {
+//    val filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+//    val imageFile = File(filesDir, "MyCamera${File.separator}$timeStamp.jpg")
+//
+//    // Pastikan direktori sudah ada
+//    imageFile.parentFile?.takeIf { !it.exists() }?.mkdirs()
+//
+//    // Mengembalikan URI menggunakan FileProvider
+//    return FileProvider.getUriForFile(
+//        context,
+//        "${BuildConfig.APPLICATION_ID}.fileprovider",
+//        imageFile
+//    )
+//}
 
 // Fungsi untuk membuat file sementara
 fun createCustomTempFile(context: Context): File {
