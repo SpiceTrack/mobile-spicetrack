@@ -1,84 +1,78 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
-    android:id="@+id/scan">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
+    <!-- Close Button -->
     <ImageButton
         android:id="@+id/btnClose"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_margin="16dp"
+        android:layout_margin="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/close"
         android:src="@drawable/baseline_close_24"
-        app:tint="@android:color/black" />
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+    />
 
     <ImageView
         android:id="@+id/previewImageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="371dp"
+        android:layout_height="359dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_place_holder"
-        android:contentDescription="@string/preview"
-        />
+        app:layout_constraintVertical_bias="0.395"
+        app:srcCompat="@drawable/ic_place_holder" />
 
-    <!-- Camera Preview -->
-    <FrameLayout
-        android:id="@+id/cameraPreview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="56dp"
-        android:layout_marginBottom="120dp" />
-
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/bottomLayout"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:padding="16dp">
+        android:padding="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center">
 
         <!-- Gallery Button -->
         <ImageButton
-            android:id="@+id/btnGallery"
+            android:id="@+id/galleryButton"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_alignParentStart="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/gallery"
-            android:src="@drawable/ic_place_holder"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_gallery"/>
 
         <!-- Capture Button -->
         <ImageButton
-            android:id="@+id/btnCapture"
+            android:id="@+id/cameraXButton"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
             android:background="@drawable/baseline_photo_camera_24"
-            android:contentDescription="@string/capture" />
+            android:contentDescription="@string/capture"/>
 
         <!-- Upload Button -->
-        <ImageButton
-            android:id="@+id/btnUpload"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="44dp"
-            android:layout_toEndOf="@id/btnCapture"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/up"
-            android:scaleType="fitXY"
-            android:src="@drawable/baseline_upload_24" />
+        <Button
+            android:id="@+id/uploadButton"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/rounded_button"
+            android:text="@string/upload"
+            android:backgroundTint="@color/brown"/>
+    </LinearLayout>
 
-    </RelativeLayout>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

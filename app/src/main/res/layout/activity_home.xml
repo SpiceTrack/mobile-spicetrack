@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.ui.main.Home">
+    tools:context=".home.ui.main.Home"
+    android:id="@+id/home">
 
     <!-- AppBar dengan Toolbar dan profil di pojok kiri atas -->
     <androidx.appcompat.widget.Toolbar
@@ -75,6 +76,14 @@
             android:hint="@string/name_hint"
             android:inputType="text"
             android:padding="30dp" />
+
+        <ImageButton
+            android:id="@+id/btnScan"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/scan"
+            android:contentDescription="@string/capture" />
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
