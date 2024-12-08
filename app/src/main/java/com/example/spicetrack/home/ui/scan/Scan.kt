@@ -83,7 +83,7 @@ class ScanActivity : ComponentActivity() {
 
             // Menyiapkan use case Preview untuk menampilkan pratinjau kamera
             val preview = Preview.Builder().build()
-            preview.setSurfaceProvider(previewView.surfaceProvider)
+            preview.setSurfaceProvider(binding.PreviewView.surfaceProvider)
 
             // Membuat instance ImageCapture untuk menangkap gambar
             imageCapture = ImageCapture.Builder().build()
