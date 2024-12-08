@@ -1,15 +1,14 @@
-package com.example.spicetrack.home.ui.dashboard
+package com.example.spicetrack
 
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.spicetrack.databinding.ActivityDashboardBinding
 import com.example.spicetrack.home.ui.dashboard.DashboardAdapter
 import com.example.spicetrack.home.ui.dashboard.DashboardViewModel
 
-class MainActivity : AppCompatActivity() {
+class DashboardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
@@ -22,15 +21,15 @@ class MainActivity : AppCompatActivity() {
 
         // Setup RecyclerView
         adapter = DashboardAdapter()
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = adapter
+        binding.rowItem.layoutManager = LinearLayoutManager(this)
+        binding.rowList.adapter = adapter
 
-        // Observe LiveData from ViewModel
-        viewModel.articles.observe(this, Observer { articles ->
-            adapter.submitList(articles)
-        })
+        // Observe ViewModel
+        viewModel.spices.observe(this) { spices ->
+            adapter.updateData(spices)
+        }
 
-        // Fetch Articles from API
-        viewModel.fetchArticles()
+        // Fetch data
+        viewModel.fetchSpices()
     }
 }

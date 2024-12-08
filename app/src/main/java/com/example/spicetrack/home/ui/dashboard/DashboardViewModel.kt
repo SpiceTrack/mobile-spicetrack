@@ -1,40 +1,39 @@
 package com.example.spicetrack.home.ui.dashboard
 
-import android.util.Log;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.viewModelScope;
-import kotlinx.coroutines.launch
-import java.util.List
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.spicetrack.home.data.Spice
+import com.example.spicetrack.home.ui.network.ApiService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class DashboardViewModel : ViewModel() {
 
-    private val _articles = MutableLiveData<List<Article>>()
-    val articles: LiveData<List<Article>> get() = _articles
+    private val _spices = MutableLiveData<List<Spice>>()
+    val spices: LiveData<List<Spice>> get() = _spices
 
-    fun fetchArticles(apiKey: String) {
-        viewModelScope.launch {
-            try {
-                val response = ApiService.create().getArticles(apiKey)
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://backend-spicetrack-1036509671472.asia-southeast2.run.app/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val api = retrofit.create(ApiService::class.java)
+
+    fun fetchSpices() {
+        api.getSpices()?.enqueue(object : Callback<List<Spice>> {
+            override fun onResponse(call: Call<List<Spice>>, response: Response<List<Spice>>) {
                 if (response.isSuccessful) {
-                    _articles.value = response.body() ?: emptyList()
+                    _spices.value = response.body() ?: emptyList() // Gunakan default jika null
                 }
-            } catch (e: Exception) {
-                Log.e("MainViewModel", "Error fetching articles", e)
             }
-        }
-    }
-    fun processImageWithMLKit(image: InputImage) {
-        val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
-        recognizer.process(image)
-            .addOnSuccessListener { visionText ->
-                // Teks yang terdeteksi
-                Log.d("MLKit", "Recognized Text: ${visionText.text}")
+            override fun onFailure(call: Call<List<Spice>>, t: Throwable) {
+                // Tangani kegagalan di sini
             }
-            .addOnFailureListener { e ->
-                Log.e("MLKit", "Text recognition failed", e)
-            }
+        })
     }
 }
