@@ -1,20 +1,29 @@
 package com.example.spicetrack
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import android.widget.TextView
+import androidx.activity.ComponentActivity
+import com.example.spicetrack.databinding.ActivityDetailBinding
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : ComponentActivity() {
+
+    private lateinit var binding: ActivityDetailBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_detail)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Get data from the intent
+        val title = intent.getStringExtra("title")
+        val subtitle = intent.getStringExtra("subtitle")
+        val content = intent.getStringExtra("content")
+        val tags = intent.getStringArrayListExtra("tags") ?: arrayListOf()
+
+        // Display the content in the UI
+        binding.titleTextView.text = title
+        binding.subtitleTextView.text = subtitle
+        binding.contentTextView.text = content
+        binding.tagsTextView.text = tags.joinToString(", ")
     }
 }
