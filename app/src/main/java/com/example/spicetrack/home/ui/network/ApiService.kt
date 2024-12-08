@@ -7,11 +7,12 @@ import retrofit2.http.*
 
 
 interface ApiService {
+
     @Multipart
-    @POST("classification/infer")
-    suspend fun uploadImage(
-        @Part file: MultipartBody.Part,
-    ): FileUploadResponse
+    @POST("classification/infer/")
+    fun uploadImage(
+        @Part image: MultipartBody.Part
+    ): Call<FileUploadResponse>
 
     @GET("spices")
     fun getSpices(): Call<List<Spice?>?>?

@@ -1,173 +1,179 @@
 package com.example.spicetrack.home.ui.scan
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
-import androidx.lifecycle.lifecycleScope
 import com.example.spicetrack.DetailActivity
 import com.example.spicetrack.R
 import com.example.spicetrack.databinding.ActivityScanBinding
-import com.example.spicetrack.home.ui.network.ApiConfig
+import com.example.spicetrack.home.ui.network.ApiService
 import com.example.spicetrack.home.ui.network.FileUploadResponse
-import com.google.gson.Gson
-import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import retrofit2.HttpException
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
-class Scan : AppCompatActivity() {
+class ScanActivity : ComponentActivity() {
 
+    private lateinit var imageCapture: ImageCapture
+    private lateinit var cameraExecutor: ExecutorService
     private lateinit var binding: ActivityScanBinding
-    private var currentImageUri: Uri? = null
 
-    // Permission request for Camera and Storage
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val allGranted = permissions.values.all { it }
-            if (allGranted) {
-                Toast.makeText(this, "Permissions granted", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Permissions denied", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-    // Check if all required permissions are granted
-    private fun allPermissionsGranted(): Boolean {
-        val cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-        val storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-        return cameraPermission && storagePermission
-    }
+    private lateinit var previewView: ImageView
+    private lateinit var resultTextView: TextView
+    private lateinit var uploadButton: Button
+    private lateinit var galleryButton: ImageButton
+    private lateinit var cameraXButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityScanBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Request permissions if not already granted
-        if (!allPermissionsGranted()) {
-            requestPermissionLauncher.launch(
-                arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
-            )
+        // Inisialisasi tampilan UI (Preview, TextView, Button, dll)
+        previewView = findViewById(R.id.PreviewView)
+        resultTextView = findViewById(R.id.resultTextView)
+        uploadButton = findViewById(R.id.uploadButton)
+        galleryButton = findViewById(R.id.galleryButton)
+        cameraXButton = findViewById(R.id.cameraXButton)
+
+        // Menyiapkan kamera untuk digunakan
+        cameraExecutor = Executors.newSingleThreadExecutor()
+        startCamera()
+
+        // Mengatur aksi ketika tombol untuk memulai pemindaian ditekan
+        cameraXButton.setOnClickListener {
+            captureImage()
         }
 
-        // Set listeners for buttons
-        binding.galleryButton.setOnClickListener { startGallery() }
-        binding.cameraXButton.setOnClickListener { startCameraX() }
-        binding.uploadButton.setOnClickListener { uploadImage() }
-    }
+        // Tombol untuk mengupload gambar yang diambil
+        uploadButton.setOnClickListener {
+            // Kode untuk mengupload gambar ke API
+        }
 
-    // Start selecting image from gallery
-    private fun startGallery() {
-        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-    }
-
-    // Handle result of gallery image selection
-    private val launcherGallery = registerForActivityResult(
-        ActivityResultContracts.PickVisualMedia()
-    ) { uri: Uri? ->
-        if (uri != null) {
-            currentImageUri = uri
-            showImage()
-        } else {
-            Log.d("Photo Picker", "No image selected")
+        // Tombol untuk membuka galeri dan memilih gambar dari galeri
+        galleryButton.setOnClickListener {
+            openGallery()
         }
     }
 
-    // Start CameraX image capture
-    private fun startCameraX() {
-        val intent = Intent(this, Camera::class.java)
-        launcherIntentCameraX.launch(intent)
+    private fun startCamera() {
+        // Memulai kamera menggunakan CameraX API
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        cameraProviderFuture.addListener({
+            val cameraProvider = cameraProviderFuture.get()
+
+            // Menyiapkan use case Preview untuk menampilkan pratinjau kamera
+            val preview = Preview.Builder().build()
+            preview.setSurfaceProvider(binding.PreviewView.surfaceProvider)
+
+            // Membuat instance ImageCapture untuk menangkap gambar
+            imageCapture = ImageCapture.Builder().build()
+
+            // Menggunakan kamera belakang sebagai kamera yang aktif
+            val cameraSelector = androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA
+
+            // Menghubungkan use case Preview dan ImageCapture dengan kamera
+            cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
+        }, ContextCompat.getMainExecutor(this))
     }
 
-    // Handle result from CameraX image capture
-    private val launcherIntentCameraX = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == RESULT_OK) {
-            currentImageUri = it.data?.getStringExtra(Camera.EXTRA_CAMERAX_IMAGE)?.toUri()
-            showImage()
-        }
-    }
+    private fun captureImage() {
+        // Membuat file untuk menyimpan gambar yang diambil
+        val file = File(externalMediaDirs.first(), "scan_${System.currentTimeMillis()}.jpg")
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(file).build()
 
-    // Display the selected image in the ImageView
-    private fun showImage() {
-        currentImageUri?.let {
-            Log.d("Image URI", "showImage: $it")
-            binding.previewImageView.setImageURI(it)
-        }
-    }
+        // Mengambil gambar dan menyimpannya ke file yang sudah ditentukan
+        imageCapture.takePicture(
+            outputOptions,
+            cameraExecutor,
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    // Setelah gambar berhasil disimpan, kirimkan gambar tersebut ke API
+                    sendImageToApi(file)
+                }
 
-    // Upload image for classification
-    private fun uploadImage() {
-        currentImageUri?.let { uri ->
-            val imageFile = uriToFile(uri, this).reduceFileImage()
-            Log.d("Image Classification File", "Image path: ${imageFile.path}")
-            showLoading(true)
-
-            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
-            val multipartBody = MultipartBody.Part.createFormData("photo", imageFile.name, requestImageFile)
-
-            lifecycleScope.launch {
-                try {
-                    val apiService = ApiConfig.getApiService()
-                    val successResponse = apiService.uploadImage(multipartBody)
-
-                    // Check if classification response is valid
-                    if (successResponse.classification != null) {
-                        binding.resultTextView.text = if (successResponse.classification == true) {
-                            String.format(
-                                "%s with %.2f%% confidence",
-                                successResponse.classification.result,
-                                successResponse.classification.confidenceScore
-                            )
-                        } else {
-                            showToast("Prediction below threshold.")
-                            String.format("Use a correct image, confidence %.2f%%", successResponse.classification.confidenceScore)
-                        }
-
-                        // If classification meets threshold, navigate to article
-                        if (successResponse.classification == true) {
-                            val spiceName = successResponse.classification.result // Identified spice name
-                            val intent = Intent(this@Scan, DetailActivity::class.java)
-                            intent.putExtra("SPICE_NAME", spiceName)
-                            startActivity(intent)
-                        }
-                    } else {
-                        showToast("Failed to classify image.")
-                    }
-
-                    showLoading(false)
-
-                } catch (e: HttpException) {
-                    val errorBody = e.response()?.errorBody()?.string()
-                    val errorResponse = Gson().fromJson(errorBody, FileUploadResponse::class.java)
-                    showToast(errorResponse.message.toString())
-                    showLoading(false)
+                override fun onError(exception: ImageCaptureException) {
+                    // Menangani error jika pengambilan gambar gagal
+                    showToast("Pengambilan gambar gagal: ${exception.message}")
                 }
             }
-        } ?: showToast(getString(R.string.empty_image_warning))
+        )
     }
 
-    // Show or hide loading indicator
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+    private fun sendImageToApi(file: File) {
+        // Membuat Retrofit instance untuk mengirim permintaan API
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://backend-spicetrack-1036509671472.asia-southeast2.run.app/classification/infer/")  // URL API
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiService::class.java)
+
+        // Membuat MultipartBody.Part untuk mengirim gambar sebagai form data
+        val imagePart = MultipartBody.Part.createFormData(
+            "image", file.name, file.asRequestBody("image/jpeg".toMediaType())
+        )
+
+        // Mengirim gambar ke server API untuk diproses
+        apiService.uploadImage(imagePart).enqueue(object : Callback<FileUploadResponse> {
+            override fun onResponse(call: Call<FileUploadResponse>, response: Response<FileUploadResponse>) {
+                // Menangani respons dari server setelah gambar diupload
+                if (response.isSuccessful) {
+                    val fileUploadResponse = response.body()
+                    if (fileUploadResponse != null) {
+                        // Menampilkan hasil prediksi yang diterima dari API
+                        resultTextView.text = fileUploadResponse.prediction
+                        // Menavigasi ke DetailActivity untuk menampilkan hasil prediksi lebih lanjut
+                        val intent = Intent(this@ScanActivity, DetailActivity::class.java)
+                        intent.putExtra("PREDICTION", fileUploadResponse.prediction)
+                        startActivity(intent)
+                    }
+                } else {
+                    // Menampilkan pesan kesalahan jika API gagal memberikan prediksi
+                    showToast("Gagal mendapatkan prediksi: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<FileUploadResponse>, t: Throwable) {
+                // Menangani kesalahan saat menghubungi API
+                showToast("Error saat mengupload gambar: ${t.message}")
+            }
+        })
     }
 
-    // Show toast message
     private fun showToast(message: String) {
+        // Menampilkan pesan toast untuk memberitahukan status atau kesalahan
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
+    private fun openGallery() {
+        // Membuka galeri untuk memilih gambar yang sudah ada
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, GALLERY_REQUEST_CODE)
+    }
+
     companion object {
-        private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
+        private const val GALLERY_REQUEST_CODE = 1  // Kode permintaan untuk memilih gambar dari galeri
     }
 }
+
