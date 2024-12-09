@@ -30,6 +30,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Preview Image -->
+
+    <ImageButton
+        android:id="@+id/switchCamera"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/switch_kamera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.871"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_cameraswitch_24" />
+
     <androidx.camera.view.PreviewView
         android:id="@+id/PreviewView"
         android:layout_width="match_parent"
@@ -41,7 +54,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.395" />
 
-
     <!-- Bottom Layout with Buttons -->
     <LinearLayout
         android:id="@+id/bottomLayout"
@@ -49,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="50dp"
+        android:padding="16dp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent">
 
