@@ -60,7 +60,7 @@ class ScanActivity : ComponentActivity() {
         startCamera()
 
         cameraXButton.setOnClickListener { captureImage() }
-        uploadButton.setOnClickListener { }
+        uploadButton.setOnClickListener { /* Upload logic */ }
         galleryButton.setOnClickListener { openGallery() }
         switchCameraButton.setOnClickListener { toggleCamera() }
     }
@@ -105,41 +105,6 @@ class ScanActivity : ComponentActivity() {
                 }
             }
         )
-    }
-
-    private fun sendImageToApi(file: File) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://backend-spicetrack-1036509671472.asia-southeast2.run.app/classification/infer/")  // URL API
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val apiService = retrofit.create(ApiService::class.java)
-
-        // Creating the image request body to upload as multipart form data
-        val imagePart = MultipartBody.Part.createFormData(
-            "image", file.name, file.asRequestBody("image/jpeg".toMediaType())
-        )
-
-        // Make API request to upload the image
-        apiService.uploadImage(imagePart).enqueue(object : Callback<FileUploadResponse> {
-            override fun onResponse(call: Call<FileUploadResponse>, response: Response<FileUploadResponse>) {
-                if (response.isSuccessful) {
-                    val fileUploadResponse = response.body()
-                    if (fileUploadResponse != null) {
-                        resultTextView.text = fileUploadResponse.prediction
-                        val intent = Intent(this@ScanActivity, DetailActivity::class.java)
-                        intent.putExtra("PREDICTION", fileUploadResponse.prediction)
-                        startActivity(intent)
-                    }
-                } else {
-                    showToast("Gagal mendapatkan prediksi: ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<FileUploadResponse>, t: Throwable) {
-                showToast("Error saat mengupload gambar: ${t.message}")
-            }
-        })
     }
 
     private fun openGallery() {

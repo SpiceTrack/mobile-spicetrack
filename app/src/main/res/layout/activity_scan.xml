@@ -30,15 +30,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Preview Image -->
+
     <ImageButton
         android:id="@+id/switchCamera"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/switch_kamera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.871"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_cameraswitch_24"
-        tools:layout_editor_absoluteX="347dp" />
+        app:srcCompat="@drawable/baseline_cameraswitch_24" />
 
     <androidx.camera.view.PreviewView
         android:id="@+id/PreviewView"
