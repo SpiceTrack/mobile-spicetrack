@@ -12,9 +12,8 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
-import com.example.spicetrack.DetailActivity
+import com.example.spicetrack.home.ui.detail.DetailActivity
 import com.example.spicetrack.R
 import com.example.spicetrack.databinding.ActivityScanBinding
 import com.example.spicetrack.home.ui.network.ApiService

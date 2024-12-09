@@ -1,8 +1,6 @@
-package com.example.spicetrack
+package com.example.spicetrack.home.ui.detail
 
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.ComponentActivity
 import com.example.spicetrack.databinding.ActivityDetailBinding
 import com.bumptech.glide.Glide

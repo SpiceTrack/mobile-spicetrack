@@ -1,35 +1,42 @@
-package com.example.spicetrack
+package com.example.spicetrack.home. ui.dashboard
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.example.spicetrack.R
 import com.example.spicetrack.databinding.ActivityDashboardBinding
-import com.example.spicetrack.home.ui.dashboard.DashboardAdapter
-import com.example.spicetrack.home.ui.dashboard.DashboardViewModel
+import com.example.spicetrack.home.ui.search.SearchActivity
 
 class DashboardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDashboardBinding
-    private val viewModel: DashboardViewModel by viewModels()
     private lateinit var adapter: DashboardAdapter
+    private lateinit var viewModel: DashboardViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Setup RecyclerView
-        adapter = DashboardAdapter()
-        binding.rowItem.layoutManager = LinearLayoutManager(this)
-        binding.rowList.adapter = adapter
-
-        // Observe ViewModel
-        viewModel.spices.observe(this) { spices ->
-            adapter.updateData(spices)
+         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
-
-        // Fetch data
-        viewModel.fetchSpices()
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.search_bar -> {
+                // Handle search action
+                val intent = Intent(this, SearchActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 }
