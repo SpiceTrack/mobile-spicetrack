@@ -29,15 +29,9 @@
         <activity
             android:name=".home.ui.detail.DetailActivity"
             android:exported="false"/>
-
-        <activity
-            android:name=".home.ui.scan.Camera"
-            android:exported="false" />
         <activity
             android:name=".home.ui.scan.ScanActivity"
             android:exported="false" />
-
-        <!-- android:exported="false" /> -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
