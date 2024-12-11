@@ -1,5 +1,6 @@
 package com.example.spicetrack
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -8,7 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.spicetrack.databinding.ActivityMainBinding
-import com.example.spicetrack.home.ui.main.Home
+import com.example.spicetrack.home.ui.dashboard.DashboardActivity
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,11 +35,12 @@ class MainActivity : AppCompatActivity() {
 
         // Tombol Get Started
         binding.btnGetStarted.setOnClickListener {
-            val registerIntent = Intent(this , Home::class.java)
-            startActivity(registerIntent)
+            val dashboardIntent = Intent(this , DashboardActivity::class.java)
+            startActivity(dashboardIntent)
+            finish()  // Menutup MainActivity setelah berpindah ke DashboardActivity
         }
 
-
+        // Start auto slider
         startAutoSlider()
     }
 

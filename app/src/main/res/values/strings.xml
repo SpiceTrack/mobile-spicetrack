@@ -87,6 +87,8 @@
     <string name="app_name2">Spice Track</string>
     <string name="fyp">You might like this</string>
     <string name="empty_image_warning">warning</string>
+    <string name="search_Icon">search_icon</string>
+    <string name="Search_Spice">search your spice</string>
 
 
 </resources>

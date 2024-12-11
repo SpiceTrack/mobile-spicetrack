@@ -5,15 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.spicetrack.databinding.RowItemBinding
+import com.example.spicetrack.home.data.ListSpiceResponseItem
+
 
 class DashboardAdapter : RecyclerView.Adapter<DashboardAdapter.SpiceViewHolder>() {
 
-    private val spices = mutableListOf<Spices>()
+    private val spices = mutableListOf<ListSpiceResponseItem>()
 
-    fun updateData(newSpices: List<Spices>) {
+    fun updateData(newSpices: List<ListSpiceResponseItem>) {
         spices.clear()
         spices.addAll(newSpices)
-        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpiceViewHolder {
@@ -28,9 +29,9 @@ class DashboardAdapter : RecyclerView.Adapter<DashboardAdapter.SpiceViewHolder>(
     override fun getItemCount(): Int = spices.size
 
     inner class SpiceViewHolder(private val binding: RowItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(spice: Spices) {
-            binding.tvItem.text = spices.title
-            Glide.with(binding.root.context).load(spice.imageUrl).into(binding.ivItem)
+        fun bind(spice: ListSpiceResponseItem) {
+            binding.tvItem.text = spice.title // Menampilkan nama rempah-rempah
+            Glide.with(binding.root.context).load(spice.imageUrl).into(binding.ivItem) // Menampilkan gambar rempah-rempah
         }
     }
 }
