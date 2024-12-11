@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.spicetrack">
+    package="com.example.spicetrack" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
 
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <uses-feature
-        android:name="android.hardware.camera.front"
-        android:required="false" />
-
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" />
+        android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -29,27 +21,29 @@
         android:roundIcon="@mipmap/ic_spice_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spicetrack"
-        tools:targetApi="31">
-        <activity
-            android:name=".home.ui.scan.Dactivity"
-            android:exported="false" />
+        tools:targetApi="31" >
         <activity
             android:name=".home.ui.dashboard.DashboardActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".home.ui.detail.DetailActivity"
+            android:exported="false"/>
+
         <activity
             android:name=".home.ui.scan.Camera"
             android:exported="false" />
-        <activity android:name=".home.ui.search.SearchActivity" />
         <activity
-            android:name=".home.ui.scan.ScanActivity"
-            android:exported="false" />
+            android:name=".home.ui.scan.Scan"
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".home.ui.main.Home" -->
+        <!-- android:exported="false" /> -->
         <activity
-            android:name=".home.ui.detail.DetailActivity"
+            android:name=".MainActivity"
             android:exported="false" />
-        <activity android:name=".MainActivity" />
         <activity
             android:name=".home.SplashActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,13 +53,27 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider>
+        </provider> <!-- Trigger Google Play services to install the backported photo picker module. -->
+        <!-- suppress AndroidDomInspection -->
+        <service
+            android:name="com.google.android.gms.metadata.ModuleDependencies"
+            android:enabled="false"
+            android:exported="false"
+            tools:ignore="MissingClass" >
+            <intent-filter>
+                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+            </intent-filter>
+
+            <meta-data
+                android:name="photopicker_activity:0:required"
+                android:value="" />
+        </service>
     </application>
 
 </manifest>

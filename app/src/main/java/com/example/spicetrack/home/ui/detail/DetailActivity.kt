@@ -2,8 +2,13 @@ package com.example.spicetrack.home.ui.detail
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
 import com.example.spicetrack.databinding.ActivityDetailBinding
 import com.bumptech.glide.Glide
+import com.example.spicetrack.R
+import com.google.android.material.chip.Chip
+import org.json.JSONArray
+import org.json.JSONException
 
 class DetailActivity : ComponentActivity() {
 
@@ -13,37 +18,60 @@ class DetailActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+//
+//        // Mendapatkan data dari intent
+        val herpsId = intent.getIntExtra("HERPS_ID", -1) // Default -1 jika tidak ada
+        val herpsTitle = intent.getStringExtra("HERPS_TITLE") // Default null jika tidak ada
+        val herpsSubtitle = intent.getStringExtra("HERPS_SUBTITLE")
+        val herpsImage = intent.getStringExtra("HERPS_IMAGE")
+        val herpsContent = intent.getStringExtra("HERPS_CONTENT")
+        val herpsTags = intent.getStringExtra("HERPS_TAGS")
+        val herpsOrigin = intent.getStringExtra("HERPS_ORIGIN")
+//        val title = intent.getStringExtra("title")
+//        val subtitle = intent.getStringExtra("subtitle")
+//        val content = intent.getStringExtra("content")
+//        val tags = intent.getStringArrayListExtra("tags") ?: arrayListOf()
+//        val imageUrl = intent.getStringExtra("image_url") // Untuk gambar (jika ada)
+//
+//        // Menetapkan data ke view
+        binding.title.text = herpsTitle
+        binding.subtitle.text = herpsSubtitle
+        binding.description.text = herpsContent
+        binding.origin.text = herpsOrigin
+        Glide.with(this)
+            .load(herpsImage)
 
-        // Mendapatkan data dari intent
-        val title = intent.getStringExtra("title")
-        val subtitle = intent.getStringExtra("subtitle")
-        val content = intent.getStringExtra("content")
-        val tags = intent.getStringArrayListExtra("tags") ?: arrayListOf()
-        val imageUrl = intent.getStringExtra("image_url") // Untuk gambar (jika ada)
+        // Menampilkan tags (dikonversi dari JSON string ke List)
+        val tagsList = parseTags(herpsTags) // Fungsi untuk parsing JSON string ke List<String>
+        populateTags(tagsList)
+    }
 
-        // Menetapkan data ke view
-        binding.title.text = title ?: "Tidak Ada Judul"
-        binding.scientificName.text = subtitle ?: "Tidak Ada Nama Ilmiah"
-        binding.description.text = content ?: "Tidak Ada Deskripsi"
 
-        // Menetapkan tag jika ada, jika tidak, kosongkan tampilan tag
-        if (tags.isNotEmpty()) {
-            binding.tag1.text = tags.getOrNull(0) ?: ""
-            binding.tag2.text = tags.getOrNull(1) ?: ""
-        } else {
-            binding.tag1.text = ""
-            binding.tag2.text = ""
+    // Fungsi untuk parsing tags dari JSON string
+    private fun parseTags(tags: String?): List<String> {
+        return try {
+            val jsonArray = JSONArray(tags)
+            List(jsonArray.length()) { i -> jsonArray.getString(i) }
+        } catch (e: JSONException) {
+            emptyList() // Return list kosong jika parsing gagal
         }
+    }
 
-        // Jika URL gambar diberikan, muat gambar ke ImageView
-        imageUrl?.let {
-            Glide.with(this)
-                .load(it)
-                .into(binding.imageMain)
+
+    // Fungsi untuk menambahkan tags ke ChipGroup
+    private fun populateTags(tagsList: List<String>) {
+        val chipGroup = binding.chipGroupTags
+        chipGroup.removeAllViews() // Hapus Chip sebelumnya
+
+
+        tagsList.forEach { tag ->
+            val chip = Chip(this)
+            chip.text = tag
+            chip.isClickable = false
+            chip.isCheckable = false
+            chip.setChipBackgroundColorResource(R.color.brown) // Warna latar belakang
+            chip.setTextColor(ContextCompat.getColor(this, R.color.white)) // Warna teks
+            chipGroup.addView(chip)
         }
-
-        // Menetapkan nilai tetap untuk asal dan bahasa (jika tidak diberikan melalui intent)
-        binding.origin.text = intent.getStringExtra("origin") ?: "Asal Tidak Diketahui"
-        binding.language.text = intent.getStringExtra("language") ?: "Bahasa Tidak Diketahui"
     }
 }
