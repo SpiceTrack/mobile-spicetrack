@@ -11,7 +11,8 @@ import com.example.spicetrack.databinding.RowItemSearchBinding
 import com.example.spicetrack.home.data.ListSpiceResponseItem
 import com.example.spicetrack.home.ui.detail.DetailActivity
 
-class SearchAdapter: ListAdapter<ListSpiceResponseItem, SearchAdapter.SearchSpiceViewHolder>(DIFF_CALLBACK) {
+class SearchAdapter :
+    ListAdapter<ListSpiceResponseItem, SearchAdapter.SearchSpiceViewHolder>(DIFF_CALLBACK) {
 
     // ViewHolder
     class SearchSpiceViewHolder(private val binding: RowItemSearchBinding) :
@@ -25,9 +26,11 @@ class SearchAdapter: ListAdapter<ListSpiceResponseItem, SearchAdapter.SearchSpic
         }
 
     }
+
     // Create ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchSpiceViewHolder {
-        val binding = RowItemSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            RowItemSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SearchSpiceViewHolder(binding)
     }
 
@@ -36,16 +39,18 @@ class SearchAdapter: ListAdapter<ListSpiceResponseItem, SearchAdapter.SearchSpic
         val spice = getItem(position)
         holder.bind(spice)
         holder.itemView.setOnClickListener {
-            val intentDetailSpice = Intent(holder.itemView.context, DetailActivity::class.java).apply {
-                putExtra("title", spice.title)
-                putExtra("subtitle", spice.subtitle)
-                putExtra("content", spice.content)
-                putExtra("tags", spice.tags?.split(",") as ArrayList<String>)
-                putExtra("image_url", spice.imageUrl)
-            }
+            val intentDetailSpice =
+                Intent(holder.itemView.context, DetailActivity::class.java).apply {
+                    putExtra("title", spice.title)
+                    putExtra("subtitle", spice.subtitle)
+                    putExtra("content", spice.content)
+                    putExtra("tags", spice.tags?.split(",") as ArrayList<String>)
+                    putExtra("image_url", spice.imageUrl)
+                }
             holder.itemView.context.startActivity(intentDetailSpice)
         }
     }
+
     // Get Item Count
     override fun getItemCount(): Int {
         return currentList.size
@@ -54,18 +59,30 @@ class SearchAdapter: ListAdapter<ListSpiceResponseItem, SearchAdapter.SearchSpic
     // DiffUtil
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListSpiceResponseItem>() {
+            //            override fun areItemsTheSame(
+//                oldItem: ListSpiceResponseItem,
+//                newItem: ListSpiceResponseItem
+//            ): Boolean {
+//                return oldItem == newItem
+//            }
+//
+//            override fun areContentsTheSame(
+//                oldItem: ListSpiceResponseItem,
+//                newItem: ListSpiceResponseItem
+//            ): Boolean {
+//                return oldItem == newItem
+//            }
             override fun areItemsTheSame(
-                oldItem: ListSpiceResponseItem,
-                newItem: ListSpiceResponseItem
+                Item: ListSpiceResponseItem,
             ): Boolean {
-                return oldItem == newItem
+                TODO("Not yet implemented")
             }
 
             override fun areContentsTheSame(
                 oldItem: ListSpiceResponseItem,
-                newItem: ListSpiceResponseItem
+                newItem: ListSpiceResponseItem,
             ): Boolean {
-                return oldItem == newItem
+                TODO("Not yet implemented")
             }
         }
     }

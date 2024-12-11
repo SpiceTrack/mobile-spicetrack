@@ -2,50 +2,22 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@android:color/white">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <!-- Image -->
         <ImageView
-            android:id="@+id/image_main"
+            android:id="@+id/iv_item"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_place_holder" />
-
-        <!-- Tags -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:id="@+id/tag1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/tag_background"
-                android:padding="8dp"
-                android:text="JAMU"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginEnd="8dp" />
-
-            <TextView
-                android:id="@+id/tag2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/tag_background"
-                android:padding="8dp"
-                android:text="MEDISINAL"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-        </LinearLayout>
 
         <!-- Title -->
         <TextView
@@ -54,26 +26,29 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Kunyit"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/brown"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
-        <!-- Scientific Name -->
+        <!-- Subtitle -->
         <TextView
-            android:id="@+id/scientific_name"
+            android:id="@+id/subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Curcuma longa"
-            android:textSize="16sp"
-            android:textColor="@android:color/darker_gray" />
+            android:layout_marginTop="8dp"
+            android:text="Rempah khas Indonesia"
+            android:textColor="@color/brown_light"
+            android:textSize="18sp"
+            />
 
-        <!-- Origin and Language -->
+        <!-- Origin and Flavor -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
+            <!-- Origin -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -83,18 +58,20 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ASAL"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black" />
+                    android:text="ORIGIN"
+                    android:layout_marginRight="12dp"
+                    android:textColor="@color/brown"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/origin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Jawa"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/brown_light" />
             </LinearLayout>
 
+            <!-- Flavor -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -104,18 +81,29 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BAHASA"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black" />
+                    android:text="FLAVOR"
+                    android:textColor="@color/brown"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/language"
+                    android:id="@+id/Flavor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Earthy, Pahit"
-                    android:textColor="@android:color/black" />
+                    android:text="Pahit, Pedas"
+                    android:textColor="@color/brown_light" />
             </LinearLayout>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupTags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:singleLine="true"
+                app:chipSpacing="8dp" />
+
         </LinearLayout>
+
 
         <!-- Description -->
         <TextView
@@ -124,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Kunyit adalah rempah-rempah yang biasa digunakan..."
-            android:textColor="@android:color/black"
+            android:textColor="@color/brown"
             android:textSize="16sp" />
     </LinearLayout>
 </ScrollView>

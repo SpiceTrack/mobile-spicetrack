@@ -1,42 +1,40 @@
-package com.example.spicetrack.home. ui.dashboard
+package com.example.spicetrack.home.ui.dashboard
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.spicetrack.R
-import com.example.spicetrack.databinding.ActivityDashboardBinding
-import com.example.spicetrack.home.ui.search.SearchActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.spicetrack.databinding.ActivityDashboard2Binding
+import com.example.spicetrack.home.data.HerpsResponseItem
 
 class DashboardActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityDashboardBinding
-    private lateinit var adapter: DashboardAdapter
-    private lateinit var viewModel: DashboardViewModel
+    private lateinit var binding: ActivityDashboard2Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityDashboardBinding.inflate(layoutInflater)
+        binding = ActivityDashboard2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        supportActionBar?.hide()
+        val layoutManager = LinearLayoutManager(this)
+        binding.rvHerps.layoutManager = layoutManager
+        val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
+        binding.rvHerps.addItemDecoration(itemDecoration)
+
+
+        val DashboardViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(DashboardViewModel::class.java)
+        DashboardViewModel.herps.observe(this) { herps ->
+            setHerpsData(herps)
         }
     }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.search_bar -> {
-                // Handle search action
-                val intent = Intent(this, SearchActivity::class.java)
-                startActivity(intent)
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
+
+    private fun setHerpsData(herps: List<HerpsResponseItem>) {
+        val adapter = DashboardAdapter(herps)
+        binding.rvHerps.adapter = adapter
     }
 }
