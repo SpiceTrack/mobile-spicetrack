@@ -6,16 +6,11 @@ import kotlinx.parcelize.Parcelize
 
 
 data class ApiResponse(
-        @field:SerializedName("index")
-        val index: Int? = null,
+        val classification: String,
+        val url: String
+)
 
-        @field:SerializedName("classification")
-        val classification: String? = null,
 
-        @field:SerializedName("url")
-        val url: String? = null,
-
-    )
 
 
 
