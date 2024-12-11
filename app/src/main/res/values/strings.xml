@@ -31,8 +31,8 @@
     <string name="spicetrack">SpiceTrack</string>
     <string name="title1">Scan Your Spice</string>
     <string name="desc1">Find out what spice it is with your spice scan</string>
-    <string name="title2">Find Out Recipes</string>
-    <string name="desc2">Explore creative recipes using the best spices</string>
+    <string name="title2">Find Out Spice</string>
+    <string name="desc2">Explore the best spices around you that you unknowledge</string>
     <string name="title3">Find articles</string>
     <string name="desc3">Learn the benefits, history and uses of spices through interesting articles</string>
     <string name="reg">Get Started</string>
@@ -87,6 +87,7 @@
     <string name="app_name2">Spice Track</string>
     <string name="fyp">You might like this</string>
     <string name="empty_image_warning">warning</string>
+    <string name="read_now">Read More</string>
 
 
 </resources>

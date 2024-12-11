@@ -1,5 +1,6 @@
 package com.example.spicetrack.home.ui.network
 
+import com.example.spicetrack.home.data.HerpsResponseItem
 import com.example.spicetrack.home.data.ListSpiceResponseItem
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -13,10 +14,11 @@ interface ApiService {
     @POST("classification/infer/")
     fun uploadImage(
         @Part image: MultipartBody.Part,
-    ): Call<FileUploadResponse>
+    ): Call<ApiResponse>
 
-    @GET("spices") // Endpoint Anda, misalnya "/spices"
-    suspend fun getSpices(): Response<List<ListSpiceResponseItem>>
+
+    @GET("herbs")
+    fun getHerps(): Call <List<HerpsResponseItem>>
 
     @GET("search") // Endpoint Anda, misalnya "/spices"
     fun findSpice(): Response<List<ListSpiceResponseItem>>

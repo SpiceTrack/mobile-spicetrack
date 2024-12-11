@@ -13,7 +13,7 @@ object ApiConfig {
             .addInterceptor(loggingInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://project-capstone-c242.et.r.appspot.com/")
+            .baseUrl("https://backend-spicetrack-1036509671472.asia-southeast2.run.app/classification/infer")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

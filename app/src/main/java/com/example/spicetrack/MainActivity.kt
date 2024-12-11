@@ -8,8 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.spicetrack.databinding.ActivityMainBinding
-import com.example.spicetrack.home.ui.main.Home
-
+import com.example.spicetrack.home.ui.dashboard.DashboardActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,27 +30,26 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        // Tombol Get Started
+         // Get Started
         binding.btnGetStarted.setOnClickListener {
-            val registerIntent = Intent(this , Home::class.java)
+            val registerIntent = Intent(this, DashboardActivity::class.java)
             startActivity(registerIntent)
         }
-
 
         startAutoSlider()
     }
 
-    private fun startAutoSlider() {
+  private fun startAutoSlider() {
         val runnable = object : Runnable {
-            override fun run() {
-                // Perbarui slide di ViewFlipper
-                binding.vfImageSlider.displayedChild = currentPage
-                updateIndicator(currentPage)
-                currentPage = (currentPage + 1) % imagesCount // Looping slide
-                handler.postDelayed(this, 2000) // Ganti slide setiap 2 detik
-            }
-        }
-        handler.post(runnable)
+          override fun run() {
+               // Perbarui slide di ViewFlipper
+              binding.vfImageSlider.displayedChild = currentPage
+               updateIndicator(currentPage)
+               currentPage = (currentPage + 1) % imagesCount
+                  handler.postDelayed(this, 2000)
+          }
+     }
+       handler.post(runnable)
     }
 
     private fun updateIndicator(position: Int) {

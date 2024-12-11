@@ -1,4 +1,5 @@
 [versions]
+adapterRxjava3 = "2.9.0"
 agp = "8.6.1"
 coil = "2.1.0"
 converterGson = "2.9.0"
@@ -29,6 +30,7 @@ annotation = "1.9.1"
 cameraCore = "1.4.0"
 
 [libraries]
+adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "adapterRxjava3" }
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2" }
 androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle" }
 androidx-camera-view = { module = "androidx.camera:camera-view" }
