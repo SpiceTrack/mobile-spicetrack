@@ -12,7 +12,7 @@ import com.example.spicetrack.home.data.ListSpiceResponseItem
 import com.example.spicetrack.home.ui.detail.DetailActivity
 
 class SearchAdapter :
-    ListAdapter<ListSpiceResponseItem, SearchAdapter.SearchSpiceViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<ListSpiceResponseItem, SearchAdapter.SearchSpiceViewHolder>() {
 
     // ViewHolder
     class SearchSpiceViewHolder(private val binding: RowItemSearchBinding) :
@@ -57,8 +57,8 @@ class SearchAdapter :
     }
 
     // DiffUtil
-    companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListSpiceResponseItem>() {
+//    companion object {
+//        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListSpiceResponseItem>() {
             //            override fun areItemsTheSame(
 //                oldItem: ListSpiceResponseItem,
 //                newItem: ListSpiceResponseItem
@@ -85,5 +85,5 @@ class SearchAdapter :
                 TODO("Not yet implemented")
             }
         }
-    }
-}
+//    }
+//}
