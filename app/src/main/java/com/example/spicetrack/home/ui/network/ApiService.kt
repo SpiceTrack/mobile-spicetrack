@@ -23,4 +23,11 @@ interface ApiService {
     fun getHerps(): Call <List<HerpsResponseItem>>
 
     @GET("herbs")
-    fun getHerbs(@Query("query") query: String): Call<HerpsResponse>}
+    fun getHerbs(@Query("query") query: String): Call<HerpsResponse>
+
+    @GET("id/{id}")
+    fun getHerb(@Path("id") id: Int): Call<HerpsResponse>
+
+    @GET
+    fun getHerb(@Url url: String): Call<HerpsResponseItem>
+}

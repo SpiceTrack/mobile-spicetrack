@@ -36,6 +36,9 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import com.example.spicetrack.home.data.HerpsResponseItem
+import com.example.spicetrack.home.ui.detail.DetailActivity
+import android.util.Log
 
 class ScanActivity : AppCompatActivity() {
 
@@ -156,15 +159,20 @@ class ScanActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     progressIndicator.visibility = LinearProgressIndicator.GONE
                     if (response.isSuccessful) {
+                        Log.d("DetailActivity", "API Response Success")
                         val apiResponse = response.body()
                         apiResponse?.let {
+                            Log.d("DetailActivity", "$apiResponse")
                             val classification = it.classification
                             resultTextView.text = "Classification: $classification"
                             // Pass data to DetailActivity
-                            val intent = Intent(this@ScanActivity, Dactivity::class.java)
-                            intent.putExtra("classification", classification)
-                            intent.putExtra("url", it.url)
-                            startActivity(intent)
+
+                            fetchHerbData(apiResponse.url)
+
+//                            val intent = Intent(this@ScanActivity, Dactivity::class.java)
+//                            intent.putExtra("classification", classification)
+//                            intent.putExtra("url", it.url)
+//                            startActivity(intent)
                         }
                     } else {
                         Toast.makeText(this@ScanActivity, "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
@@ -204,5 +212,39 @@ class ScanActivity : AppCompatActivity() {
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         openGalleryResult.launch(intent)
+    }
+
+    private fun fetchHerbData(url: String): HerpsResponseItem? {
+        var data: HerpsResponseItem?
+        data = null
+        val retrofit = Retrofit.Builder()
+            .baseUrl(apiUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        retrofit.create(ApiService::class.java)
+        val apiService = retrofit.create(ApiService::class.java)
+        val call = apiService.getHerb(url)
+        call.enqueue(object : Callback<HerpsResponseItem> {
+            override fun onResponse(call: Call<HerpsResponseItem>, response: Response<HerpsResponseItem>) {
+                if (response.isSuccessful) {
+                    val herbsData = response.body()
+                    val intent = Intent(this@ScanActivity, DetailActivity::class.java)
+                    intent.putExtra("HERPS_ID", -1) // Default -1 jika tidak ada
+                    intent.putExtra("HERPS_TITLE", herbsData?.title) // Default null jika tidak ada
+                    intent.putExtra("HERPS_SUBTITLE", herbsData?.subtitle)
+                    intent.putExtra("HERPS_IMAGE", herbsData?.imageUrl)
+                    intent.putExtra("HERPS_CONTENT", herbsData?.content)
+                    intent.putExtra("HERPS_TAGS", herbsData?.tags)
+                    intent.putExtra("HERPS_ORIGIN", herbsData?.origin)
+                    startActivity(intent)
+                }
+            }
+            override fun onFailure(call: Call<HerpsResponseItem>, t: Throwable) {
+                data = null
+            }
+        })
+        return data
+
     }
 }
