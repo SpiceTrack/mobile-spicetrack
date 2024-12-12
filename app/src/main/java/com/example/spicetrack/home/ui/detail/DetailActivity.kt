@@ -38,8 +38,16 @@ class DetailActivity : ComponentActivity() {
         binding.subtitle.text = herpsSubtitle
         binding.description.text = herpsContent
         binding.origin.text = herpsOrigin
-        Glide.with(this)
-            .load(herpsImage)
+        if (!herpsImage.isNullOrEmpty()) {
+            Glide.with(this)
+                .load(herpsImage)
+                .placeholder(R.drawable.ic_place_holder)
+                .error(R.drawable.ic_error)
+                .into(binding.ivItem)
+        } else {
+            binding.ivItem.setImageResource(R.drawable.ic_error) // Default image
+        }
+
 
         // Menampilkan tags (dikonversi dari JSON string ke List)
         val tagsList = parseTags(herpsTags) // Fungsi untuk parsing JSON string ke List<String>
