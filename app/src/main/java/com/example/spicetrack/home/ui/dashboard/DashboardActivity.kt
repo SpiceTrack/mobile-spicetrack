@@ -24,9 +24,10 @@ class DashboardActivity : AppCompatActivity() {
         binding = ActivityDashboard2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
         setupSearchView()
+        setupScanButton()
 
+        supportActionBar?.hide()
         val layoutManager = LinearLayoutManager(this)
         binding.rvHerps.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
