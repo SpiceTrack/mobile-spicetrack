@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.spicetrack.databinding.ActivitySearchBinding
-import com.example.spicetrack.databinding.ActivitySearchXBinding
 import com.example.spicetrack.home.data.HerpsResponseItem
 import com.example.spicetrack.home.ui.dashboard.DashboardAdapter
 import com.example.spicetrack.home.ui.search.SearchViewModel

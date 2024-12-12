@@ -16,7 +16,7 @@
 
         <!-- SearchView as Search Bar -->
         <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchbar"
+            android:id="@+id/search_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
