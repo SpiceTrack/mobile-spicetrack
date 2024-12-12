@@ -49,7 +49,7 @@ class DashboardViewModel : ViewModel() {
     }
 
     private fun findHerps() {
-        val client = ApiConfig.getApiService().getHerps()
+        val client = ApiConfig.getApiSearch().getHerps()
         client.enqueue(object : Callback<List<HerpsResponseItem>> {
             override fun onResponse(call: Call<List<HerpsResponseItem>>, response: Response<List<HerpsResponseItem>>) {
                 if (response.isSuccessful) {
