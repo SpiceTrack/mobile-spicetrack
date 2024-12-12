@@ -107,12 +107,18 @@
 
         <!-- Description -->
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DESKRIPSI"
+            android:textColor="@color/brown"
+            android:textStyle="bold" />
+        <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Kunyit adalah rempah-rempah yang biasa digunakan..."
-            android:textColor="@color/brown"
+            android:textColor="@color/brown_light"
             android:textSize="16sp" />
     </LinearLayout>
 </ScrollView>
