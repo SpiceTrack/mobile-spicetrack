@@ -139,12 +139,11 @@ class ScanActivity : AppCompatActivity() {
             progressIndicator.visibility = LinearProgressIndicator.VISIBLE
 
             val byteArray = bitmapToByteArray(bitmap)
-            val encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+//            val encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
 
             // Create a request body for the image using MediaType.toMediaTypeOrNull()
-            val requestBody = RequestBody.create(
-                "application/json".toMediaTypeOrNull(), "{\"image\": \"$encodedImage\"}"
-            )
+            val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), byteArray)
+            val body = MultipartBody.Part.createFormData("image", "image.jpg", requestFile)
 
             val retrofit = Retrofit.Builder()
                 .baseUrl(apiUrl)
@@ -152,7 +151,7 @@ class ScanActivity : AppCompatActivity() {
                 .build()
 
             val apiService = retrofit.create(ApiService::class.java)
-            val call = apiService.uploadImage(MultipartBody.Part.createFormData("image", "image.jpg", requestBody))
+            val call = apiService.uploadImage(body)
             call.enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     progressIndicator.visibility = LinearProgressIndicator.GONE
