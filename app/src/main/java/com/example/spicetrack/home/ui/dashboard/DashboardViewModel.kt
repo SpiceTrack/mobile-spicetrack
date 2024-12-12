@@ -41,6 +41,8 @@ class DashboardViewModel : ViewModel() {
     private val _herps = MutableLiveData<List<HerpsResponseItem>>()
     val herps: LiveData<List<HerpsResponseItem>> = _herps
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     init {
         findHerps()
@@ -69,5 +71,4 @@ class DashboardViewModel : ViewModel() {
     companion object {
         private const val TAG = "DashboardViewModel"
     }
-
 }

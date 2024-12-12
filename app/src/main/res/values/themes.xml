@@ -5,5 +5,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.Spicetrack" parent="Base.Theme.Spicetrack" />
+    <style name="Theme.Spicetrack" parent="Base.Theme.Spicetrack" >
+        <item name="android:statusBarColor">@color/brown</item>
+    </style>
 </resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#E0E0E0" /> <!-- Warna abu-abu untuk placeholder -->
+            <corners android:radius="8dp" /> <!-- Sudut melengkung -->
+            <size android:width="100dp" android:height="100dp" /> <!-- Ukuran placeholder -->
+            <item>
+                <bitmap android:src="@drawable/ic_placeholder"
+                android:gravity="center" />
+            </item>
+        </shape>
+    </item>
+</selector>

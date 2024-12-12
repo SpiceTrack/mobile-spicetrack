@@ -18,7 +18,7 @@ class DetailActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//
+
 //        // Mendapatkan data dari intent
         val herpsId = intent.getIntExtra("HERPS_ID", -1) // Default -1 jika tidak ada
         val herpsTitle = intent.getStringExtra("HERPS_TITLE") // Default null jika tidak ada
@@ -46,7 +46,6 @@ class DetailActivity : ComponentActivity() {
         populateTags(tagsList)
     }
 
-
     // Fungsi untuk parsing tags dari JSON string
     private fun parseTags(tags: String?): List<String> {
         return try {
@@ -56,7 +55,6 @@ class DetailActivity : ComponentActivity() {
             emptyList() // Return list kosong jika parsing gagal
         }
     }
-
 
     // Fungsi untuk menambahkan tags ke ChipGroup
     private fun populateTags(tagsList: List<String>) {

@@ -1,90 +1,68 @@
-package com.example.spicetrack.home.ui.search
-
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.spicetrack.databinding.ActivitySearchBinding
-import com.example.spicetrack.home.data.ListSpiceResponseItem
+import com.example.spicetrack.databinding.ActivitySearchXBinding
+import com.example.spicetrack.home.data.HerpsResponseItem
+import com.example.spicetrack.home.ui.dashboard.DashboardAdapter
+import com.example.spicetrack.home.ui.search.SearchViewModel
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private val searchViewModel by viewModels<SearchViewModel>()
+    private lateinit var searchAdapter: DashboardAdapter
+    private val searchViewModel: SearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Bind with the layout
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set appbar
-        setSupportActionBar(binding.searchBar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val herpsTitle = intent.getStringExtra("HERPS_TITLE") // Default null jika tidak ada
+        val herpsImage = intent.getStringExtra("HERPS_IMAGE")
 
-        // Set up RecyclerView
+        supportActionBar?.hide()
+
+        setupRecyclerView()
+        observeSearchResults()
+
+        setupSearchView()
+    }
+
+    private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerViewSearch.layoutManager = layoutManager
-        val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
-        binding.recyclerViewSearch.addItemDecoration(itemDecoration)
+        searchAdapter = DashboardAdapter(emptyList())
+        binding.recyclerViewSearch.adapter = searchAdapter
+    }
 
-
-        // Observe loading state
-        searchViewModel.isLoading.observe(this) {
-            showLoading(it)
+    private fun observeSearchResults() {
+        searchViewModel.searchResults.observe(this) { herps ->
+            setSearchResults(herps)
         }
+    }
 
-        // Observe searched Spice
-        searchViewModel.searchedSpice.observe(this) { spice ->
-            setSearchSpiceData(spice)
-        }
-
-        // Set up SearchView and fetch Spice
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+    private fun setupSearchView() {
+        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    searchViewModel.fetchSearchedSpice(it)
-                    binding.searchView.clearFocus()
-                }
+                query?.let { searchViewModel.searchHerbs(it) }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+                newText?.let { searchViewModel.searchHerbs(it) }
+                return true
             }
         })
     }
 
-    // Handle Up button press
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressedDispatcher.onBackPressed()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
+    private fun setSearchResults(herps: List<HerpsResponseItem>) {
+        if (herps.isEmpty()) {
+            Toast.makeText(this, "No results found", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    // Circular Progress Loading Indicator
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
-
-    }
-    // Give List of Spice to Adapter
-    private fun setSearchSpiceData(spice: List<ListSpiceResponseItem?>?) {
-        val adapter = SearchAdapter()
-        adapter.submitList(spice)
-        binding.recyclerViewSearch.adapter = adapter
+        searchAdapter.updateData(herps)
     }
 }

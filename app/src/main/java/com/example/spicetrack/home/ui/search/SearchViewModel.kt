@@ -1,48 +1,39 @@
 package com.example.spicetrack.home.ui.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.spicetrack.home.data.ListSpiceResponse
-import com.example.spicetrack.home.data.ListSpiceResponseItem
+import com.example.spicetrack.home.data.HerpsResponse
+import com.example.spicetrack.home.data.HerpsResponseItem
 import com.example.spicetrack.home.ui.network.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SearchViewModel : ViewModel() {
-    companion object {
-        private const val TAG = "SearchViewModel"
-    }
 
-    private val _searchedSpices = MutableLiveData<List<ListSpiceResponseItem?>>()
-    val searchedSpice: LiveData<List<ListSpiceResponseItem?>> = _searchedSpices
+    private val _searchResults = MutableLiveData<List<HerpsResponseItem>>()
+    val searchResults: LiveData<List<HerpsResponseItem>> get() = _searchResults
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    fun searchHerbs(query: String) {
+        // Memanggil API untuk pencarian rempah berdasarkan query
+        val apiService = ApiConfig.getApiService()
+        val call = apiService.getHerbs(query)
 
-    fun fetchSearchedSpice() {
-        _isLoading.value = true
-
-        val client = ApiConfig.getApiService().findSpice()
-        client.enqueue(object : Callback<ListSpiceResponse> {
-            override fun onResponse(
-                call: Call<ListSpiceResponse>,
-                response: Response<ListSpiceResponse>
-            ) {
-                _isLoading.value = false
+        call.enqueue(object : Callback<HerpsResponse> {
+            override fun onResponse(call: Call<HerpsResponse>, response: Response<HerpsResponse>) {
                 if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    _searchedSpices.value = responseBody?.listSpiceResponse ?: emptyList()
+                    // Jika berhasil, update LiveData dengan data hasil pencarian
+                    _searchResults.postValue(response.body()?.herpsResponse)
                 } else {
-                    Log.d(TAG, "onFailure: ${response.message()}")
+                    // Jika gagal, update dengan list kosong
+                    _searchResults.postValue(emptyList())
                 }
             }
 
-            override fun onFailure(call: Call<ListSpiceResponse>, t: Throwable) {
-                _isLoading.value = false
-                Log.e(TAG, "onFailure: ${t.message}")
+            override fun onFailure(call: Call<HerpsResponse>, t: Throwable) {
+                // Jika gagal karena masalah jaringan atau lainnya
+                _searchResults.postValue(emptyList())
             }
         })
     }
