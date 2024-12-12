@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.spicetrack.databinding.ActivityDashboard2Binding
 import com.example.spicetrack.home.data.HerpsResponseItem
+import com.example.spicetrack.home.ui.scan.ScanActivity
 import com.example.spicetrack.home.ui.search.SearchActivity
 
 class DashboardActivity : AppCompatActivity() {
@@ -54,6 +55,13 @@ class DashboardActivity : AppCompatActivity() {
         binding.searchBar.setOnClickListener {
             // Start SearchActivity when the SearchView is clicked
             val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
+        }
+    }
+    private fun setupScanButton() {
+        binding.btnScan.setOnClickListener {
+            // Intent to start ScanActivity
+            val intent = Intent(this, ScanActivity::class.java)
             startActivity(intent)
         }
     }
