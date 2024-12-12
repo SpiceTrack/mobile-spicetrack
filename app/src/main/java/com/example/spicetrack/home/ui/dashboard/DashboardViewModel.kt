@@ -41,13 +41,15 @@ class DashboardViewModel : ViewModel() {
     private val _herps = MutableLiveData<List<HerpsResponseItem>>()
     val herps: LiveData<List<HerpsResponseItem>> = _herps
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     init {
         findHerps()
     }
 
     private fun findHerps() {
-        val client = ApiConfig.getApiService().getHerps()
+        val client = ApiConfig.getApiSearch().getHerps()
         client.enqueue(object : Callback<List<HerpsResponseItem>> {
             override fun onResponse(call: Call<List<HerpsResponseItem>>, response: Response<List<HerpsResponseItem>>) {
                 if (response.isSuccessful) {
@@ -69,5 +71,4 @@ class DashboardViewModel : ViewModel() {
     companion object {
         private const val TAG = "DashboardViewModel"
     }
-
 }

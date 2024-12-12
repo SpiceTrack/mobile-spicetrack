@@ -1,7 +1,9 @@
 package com.example.spicetrack.home.ui.network
 
+import com.example.spicetrack.home.data.HerpsResponse
 import com.example.spicetrack.home.data.HerpsResponseItem
 import com.example.spicetrack.home.data.ListSpiceResponseItem
+import com.example.spicetrack.home.data.SearchResponseItem
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response
@@ -20,6 +22,12 @@ interface ApiService {
     @GET("herbs")
     fun getHerps(): Call <List<HerpsResponseItem>>
 
-    @GET("search") // Endpoint Anda, misalnya "/spices"
-    fun findSpice(): Response<List<ListSpiceResponseItem>>
+    @GET("herbs")
+    fun getHerbs(@Query("query") query: String): Call<HerpsResponse>
+
+    @GET("id/{id}")
+    fun getHerb(@Path("id") id: Int): Call<HerpsResponse>
+
+    @GET
+    fun getHerb(@Url url: String): Call<HerpsResponseItem>
 }
