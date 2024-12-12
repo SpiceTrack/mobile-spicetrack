@@ -1,3 +1,5 @@
+package com.example.spicetrack.home.ui.search
+
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
