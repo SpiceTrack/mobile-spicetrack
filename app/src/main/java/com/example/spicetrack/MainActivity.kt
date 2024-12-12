@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.spicetrack.databinding.ActivityMainBinding
 import com.example.spicetrack.home.ui.dashboard.DashboardActivity
+import com.example.spicetrack.home.ui.scan.ScanActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         // Get Started button
         binding.btnGetStarted.setOnClickListener {
-            val registerIntent = Intent(this, DashboardActivity::class.java)
+            val registerIntent = Intent(this, ScanActivity::class.java)
             startActivity(registerIntent)
         }
 
