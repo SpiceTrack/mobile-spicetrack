@@ -1,6 +1,5 @@
 package com.example.spicetrack.home.ui.dashboard
 
-import SearchActivity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.spicetrack.databinding.ActivityDashboard2Binding
 import com.example.spicetrack.home.data.HerpsResponseItem
+import com.example.spicetrack.home.ui.search.SearchActivity
 
 class DashboardActivity : AppCompatActivity() {
 
