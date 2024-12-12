@@ -1,158 +1,209 @@
 package com.example.spicetrack.home.ui.scan
 
+import android.Manifest
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.spicetrack.home.ui.detail.DetailActivity
+import androidx.core.content.FileProvider
 import com.example.spicetrack.R
-import com.example.spicetrack.databinding.ActivityScanBinding
+import com.example.spicetrack.home.ui.network.ApiResponse
 import com.example.spicetrack.home.ui.network.ApiService
-import com.example.spicetrack.home.ui.network.FileUploadResponse
-import okhttp3.MediaType.Companion.toMediaType
+import com.google.android.material.progressindicator.LinearProgressIndicator
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import java.text.SimpleDateFormat
+import java.util.*
 
-class ScanActivity : ComponentActivity() {
+class ScanActivity : AppCompatActivity() {
 
-    private lateinit var imageCapture: ImageCapture
-    private lateinit var cameraExecutor: ExecutorService
-    private lateinit var binding: ActivityScanBinding
-
-    private lateinit var previewView: ImageView
+    private lateinit var progressIndicator: LinearProgressIndicator
+    private lateinit var imageView: ImageView
     private lateinit var resultTextView: TextView
+    private lateinit var closeButton: ImageButton
     private lateinit var uploadButton: Button
     private lateinit var galleryButton: ImageButton
-    private lateinit var cameraXButton: ImageButton
-    private var cameraSelector = androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA
+    private lateinit var cameraButton: Button
+
+    private val apiUrl = "https://backend-spicetrack-1036509671472.asia-southeast2.run.app"
+    private var selectedImageBitmap: Bitmap? = null
+
+    private val CAMERA_PERMISSION_REQUEST_CODE = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityScanBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_scan)
 
-        previewView = findViewById(R.id.PreviewView)
+        progressIndicator = findViewById(R.id.progressIndicator)
+        imageView = findViewById(R.id.imageview)
         resultTextView = findViewById(R.id.resultTextView)
+        closeButton = findViewById(R.id.btnClose)
         uploadButton = findViewById(R.id.uploadButton)
         galleryButton = findViewById(R.id.galleryButton)
-        cameraXButton = findViewById(R.id.cameraXButton)
+        cameraButton = findViewById(R.id.cameraXButton)
 
-        val switchCameraButton = findViewById<ImageButton>(R.id.switchCamera)
+        // Close button functionality
+        closeButton.setOnClickListener { finish() }
 
-        cameraExecutor = Executors.newSingleThreadExecutor()
-        startCamera()
-
-        cameraXButton.setOnClickListener { captureImage() }
-        uploadButton.setOnClickListener { }
+        // Gallery button functionality
         galleryButton.setOnClickListener { openGallery() }
-        switchCameraButton.setOnClickListener { toggleCamera() }
+
+        // Camera button functionality
+        cameraButton.setOnClickListener { checkCameraPermissionAndOpen() }
+
+        // Upload button functionality
+        uploadButton.setOnClickListener { uploadImageToApi() }
     }
 
-    private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        cameraProviderFuture.addListener({
-            val cameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder().build()
-            preview.setSurfaceProvider(binding.PreviewView.surfaceProvider)
-
-            imageCapture = ImageCapture.Builder().build()
-
-            cameraProvider.unbindAll()
-            cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
-        }, ContextCompat.getMainExecutor(this))
-    }
-
-    private fun toggleCamera() {
-        cameraSelector = if (cameraSelector == androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA) {
-            androidx.camera.core.CameraSelector.DEFAULT_FRONT_CAMERA
-        } else {
-            androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA
+    private val openGalleryResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imageUri = result.data?.data
+            imageView.setImageURI(imageUri)
+            imageUri?.let {
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+                selectedImageBitmap = bitmap
+            }
         }
-        startCamera()
     }
 
-    private fun captureImage() {
-        val file = File(externalMediaDirs.first(), "scan_${System.currentTimeMillis()}.jpg")
-        val outputOptions = ImageCapture.OutputFileOptions.Builder(file).build()
-
-        imageCapture.takePicture(
-            outputOptions,
-            cameraExecutor,
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    sendImageToApi(file)
-                }
-
-                override fun onError(exception: ImageCaptureException) {
-                    showToast("Pengambilan gambar gagal: ${exception.message}")
-                }
+    private val openCameraResult = registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
+        if (isSuccess) {
+            selectedImageBitmap?.let {
+                imageView.setImageBitmap(it)
             }
-        )
+        } else {
+            Toast.makeText(this, "Gagal mengambil gambar", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun sendImageToApi(file: File) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://backend-spicetrack-1036509671472.asia-southeast2.run.app/classification/infer/")  // URL API
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    // Function to check for camera permissions before opening the camera
+    private fun checkCameraPermissionAndOpen() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            openCamera()
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                CAMERA_PERMISSION_REQUEST_CODE
+            )
+        }
+    }
 
-        val apiService = retrofit.create(ApiService::class.java)
+    // Handle camera permission result
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera()
+            } else {
+                Toast.makeText(this, "Izin kamera diperlukan untuk mengambil gambar", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
-        // Creating the image request body to upload as multipart form data
-        val imagePart = MultipartBody.Part.createFormData(
-            "image", file.name, file.asRequestBody("image/jpeg".toMediaType())
-        )
+    // Open the camera to take a picture
+    private fun openCamera() {
+        val photoUri = createImageUri()  // Create URI to save the photo
+        photoUri?.let {
+            openCameraResult.launch(it)
+        }
+    }
 
-        // Make API request to upload the image
-        apiService.uploadImage(imagePart).enqueue(object : Callback<FileUploadResponse> {
-            override fun onResponse(call: Call<FileUploadResponse>, response: Response<FileUploadResponse>) {
-                if (response.isSuccessful) {
-                    val fileUploadResponse = response.body()
-                    if (fileUploadResponse != null) {
-                        resultTextView.text = fileUploadResponse.prediction
-                        val intent = Intent(this@ScanActivity, DetailActivity::class.java)
-                        intent.putExtra("PREDICTION", fileUploadResponse.prediction)
-                        startActivity(intent)
+    // Upload image function
+    private fun uploadImageToApi() {
+        val bitmap = selectedImageBitmap
+        if (bitmap != null) {
+            // Show progress
+            progressIndicator.visibility = LinearProgressIndicator.VISIBLE
+
+            val byteArray = bitmapToByteArray(bitmap)
+            val encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+            // Create a request body for the image using MediaType.toMediaTypeOrNull()
+            val requestBody = RequestBody.create(
+                "application/json".toMediaTypeOrNull(), "{\"image\": \"$encodedImage\"}"
+            )
+
+            val retrofit = Retrofit.Builder()
+                .baseUrl(apiUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            val apiService = retrofit.create(ApiService::class.java)
+            val call = apiService.uploadImage(MultipartBody.Part.createFormData("image", "image.jpg", requestBody))
+            call.enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                    progressIndicator.visibility = LinearProgressIndicator.GONE
+                    if (response.isSuccessful) {
+                        val apiResponse = response.body()
+                        apiResponse?.let {
+                            val classification = it.classification
+                            resultTextView.text = "Classification: $classification"
+                            // Pass data to DetailActivity
+                            val intent = Intent(this@ScanActivity, Dactivity::class.java)
+                            intent.putExtra("classification", classification)
+                            intent.putExtra("url", it.url)
+                            startActivity(intent)
+                        }
+                    } else {
+                        Toast.makeText(this@ScanActivity, "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    showToast("Gagal mendapatkan prediksi: ${response.message()}")
                 }
-            }
 
-            override fun onFailure(call: Call<FileUploadResponse>, t: Throwable) {
-                showToast("Error saat mengupload gambar: ${t.message}")
-            }
-        })
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    progressIndicator.visibility = LinearProgressIndicator.GONE
+                    Toast.makeText(this@ScanActivity, "Failed: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else {
+            Toast.makeText(this, "Please select an image first", Toast.LENGTH_SHORT).show()
+        }
     }
 
+    private fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        return byteArrayOutputStream.toByteArray()
+    }
+
+    // Create URI for saving the image
+    private fun createImageUri(): Uri? {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val imageFileName = "JPEG_${timeStamp}_"
+        val storageDir: File = getExternalFilesDir(null) ?: return null
+        val imageFile = File.createTempFile(imageFileName, ".jpg", storageDir)
+        return FileProvider.getUriForFile(
+            this,
+            "${packageName}.provider",  // Ensure this matches the provider authorities in AndroidManifest.xml
+            imageFile
+        )
+    }
+
+    // Function to open gallery and choose image
     private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, GALLERY_REQUEST_CODE)
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    companion object {
-        private const val GALLERY_REQUEST_CODE = 1
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        openGalleryResult.launch(intent)
     }
 }

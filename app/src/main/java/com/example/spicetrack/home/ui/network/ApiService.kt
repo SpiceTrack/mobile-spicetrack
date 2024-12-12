@@ -16,10 +16,8 @@ interface ApiService {
     @POST("classification/infer/")
     fun uploadImage(
         @Part image: MultipartBody.Part,
-    ): Call<FileUploadResponse>
+    ): Call<ApiResponse>
 
-//    @GET("spices") // Endpoint Anda, misalnya "/spices"
-//    suspend fun getSpices(): Response<List<ListSpiceResponseItem>>
 
     @GET("herbs")
     fun getHerps(): Call <List<HerpsResponseItem>>

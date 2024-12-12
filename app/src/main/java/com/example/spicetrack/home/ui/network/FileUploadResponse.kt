@@ -12,7 +12,8 @@ data class FileUploadResponse(
 
 	@field:SerializedName("url")
 	val url: String? = null
-) {
-	val prediction: CharSequence?
-		get() = classification
-}
+)
+//) {
+//	val prediction: CharSequence?
+//		get() = classification
+//}

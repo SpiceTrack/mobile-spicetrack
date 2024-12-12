@@ -30,46 +30,44 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-//         Tombol Get Started
+         // Get Started
         binding.btnGetStarted.setOnClickListener {
-//            val registerIntent = Intent(this, DashboardActivity::class.java)
-//            startActivity(registerIntent)
-            startActivity(Intent(this@MainActivity, DashboardActivity::class.java))
+            val registerIntent = Intent(this, DashboardActivity::class.java)
+            startActivity(registerIntent)
         }
 
-
-//        startAutoSlider()
+        startAutoSlider()
     }
 
-//    private fun startAutoSlider() {
-//        val runnable = object : Runnable {
-//            override fun run() {
-//                // Perbarui slide di ViewFlipper
-//                binding.vfImageSlider.displayedChild = currentPage
-//                updateIndicator(currentPage)
-//                currentPage = (currentPage + 1) % imagesCount // Looping slide
-//                handler.postDelayed(this, 2000) // Ganti slide setiap 2 detik
-//            }
-//        }
-//        handler.post(runnable)
-//    }
-//
-//    private fun updateIndicator(position: Int) {
-//        // Reset semua dots ke tidak aktif
-//        binding.dot1.setBackgroundResource(R.drawable.circle_inactive)
-//        binding.dot2.setBackgroundResource(R.drawable.circle_inactive)
-//        binding.dot3.setBackgroundResource(R.drawable.circle_inactive)
-//
-//        // Aktifkan dot sesuai slide yang tampil
-//        when (position) {
-//            0 -> binding.dot1.setBackgroundResource(R.drawable.circle_active)
-//            1 -> binding.dot2.setBackgroundResource(R.drawable.circle_active)
-//            2 -> binding.dot3.setBackgroundResource(R.drawable.circle_active)
-//        }
-//    }
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        handler.removeCallbacksAndMessages(null) // Hentikan handler saat activity dihancurkan
-//    }
+  private fun startAutoSlider() {
+        val runnable = object : Runnable {
+          override fun run() {
+               // Perbarui slide di ViewFlipper
+              binding.vfImageSlider.displayedChild = currentPage
+               updateIndicator(currentPage)
+               currentPage = (currentPage + 1) % imagesCount
+                  handler.postDelayed(this, 2000)
+          }
+     }
+       handler.post(runnable)
+    }
+
+    private fun updateIndicator(position: Int) {
+        // Reset semua dots ke tidak aktif
+        binding.dot1.setBackgroundResource(R.drawable.circle_inactive)
+        binding.dot2.setBackgroundResource(R.drawable.circle_inactive)
+        binding.dot3.setBackgroundResource(R.drawable.circle_inactive)
+
+        // Aktifkan dot sesuai slide yang tampil
+        when (position) {
+            0 -> binding.dot1.setBackgroundResource(R.drawable.circle_active)
+            1 -> binding.dot2.setBackgroundResource(R.drawable.circle_active)
+            2 -> binding.dot3.setBackgroundResource(R.drawable.circle_active)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacksAndMessages(null) // Hentikan handler saat activity dihancurkan
+    }
 }
