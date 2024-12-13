@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         // Get Started button
         binding.btnGetStarted.setOnClickListener {
-            val registerIntent = Intent(this, ScanActivity::class.java)
+            val registerIntent = Intent(this, DashboardActivity::class.java)
             startActivity(registerIntent)
         }
 
